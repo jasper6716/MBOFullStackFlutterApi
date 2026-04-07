@@ -1,0 +1,1679 @@
+<!DOCTYPE html>
+<!-- saved from url=(0091)https://laraveldaily.com/lesson/flutter-mobile-app-laravel/partial-widgets-code-refactoring -->
+<html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"><meta http-equiv="origin-trial" content="A7vZI3v+Gz7JfuRolKNM4Aff6zaGuT7X0mf3wtoZTnKv6497cVMnhy03KDqX7kBz/q/iidW7srW31oQbBt4VhgoAAACUeyJvcmlnaW4iOiJodHRwczovL3d3dy5nb29nbGUuY29tOjQ0MyIsImZlYXR1cmUiOiJEaXNhYmxlVGhpcmRQYXJ0eVN0b3JhZ2VQYXJ0aXRpb25pbmczIiwiZXhwaXJ5IjoxNzU3OTgwODAwLCJpc1N1YmRvbWFpbiI6dHJ1ZSwiaXNUaGlyZFBhcnR5Ijp0cnVlfQ==">
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta property="og:type" content="website">
+
+
+
+
+
+
+    <link rel="shortcut icon" type="image/png" href="https://laraveldaily.com/favicon.png">
+
+            <title>15 - Partial Widgets - Code Refactoring | Laravel Daily</title>
+    
+    <link rel="preload" as="style" href="./15 - Partial Widgets - Code Refactoring _ Laravel Daily_files/app.869f838e.css"><link rel="modulepreload" href="./15 - Partial Widgets - Code Refactoring _ Laravel Daily_files/app.564ffddc.js"><link rel="stylesheet" href="./15 - Partial Widgets - Code Refactoring _ Laravel Daily_files/app.869f838e.css"><script type="text/javascript" async="" src="./15 - Partial Widgets - Code Refactoring _ Laravel Daily_files/analytics.js"></script><script type="text/javascript" async="" src="./15 - Partial Widgets - Code Refactoring _ Laravel Daily_files/js"></script><script async="" src="./15 - Partial Widgets - Code Refactoring _ Laravel Daily_files/matomo.js"></script><script type="text/javascript" async="" charset="utf-8" src="./15 - Partial Widgets - Code Refactoring _ Laravel Daily_files/recaptcha__en.js" crossorigin="anonymous" integrity="sha384-pktkxR6IDISlZiipN/N1lvOVg6ziczd2QVhiOC2agGLBDL5x0fDDzwmTUfQufQMA"></script><script type="module" src="./15 - Partial Widgets - Code Refactoring _ Laravel Daily_files/app.564ffddc.js"></script>    <style>[wire\:loading], [wire\:loading\.delay], [wire\:loading\.inline-block], [wire\:loading\.inline], [wire\:loading\.block], [wire\:loading\.flex], [wire\:loading\.table], [wire\:loading\.grid], [wire\:loading\.inline-flex] {display: none;}[wire\:loading\.delay\.shortest], [wire\:loading\.delay\.shorter], [wire\:loading\.delay\.short], [wire\:loading\.delay\.long], [wire\:loading\.delay\.longer], [wire\:loading\.delay\.longest] {display:none;}[wire\:offline] {display: none;}[wire\:dirty]:not(textarea):not(input):not(select) {display: none;}input:-webkit-autofill, select:-webkit-autofill, textarea:-webkit-autofill {animation-duration: 50000s;animation-name: livewireautofill;}@keyframes livewireautofill { from {} }</style>
+    <style>
+    :root {
+        --comments-spacing: 2.5rem;
+        --comments-avatar-size: 1.5rem;
+        --comments-avatar-margin: 0.35rem;
+        --comments-border-radius: 0.3rem;
+        --comments-z-modal: 2;
+        /* colors */
+        --comments-color-background: white;
+        --comments-color-background-nested: white;
+        --comments-color-background-paper: rgb(249, 250, 251);
+        --comments-color-background-info: rgb(237, 235, 252);
+        --comments-color-reaction: rgb(238, 239, 240);
+        --comments-color-reaction-hover: rgb(229, 231, 235);
+        --comments-color-reacted: rgba(67, 56, 202, 0.2);
+        --comments-color-reacted-hover: rgba(67, 56, 202, 0.35);
+        --comments-color-border: rgb(221, 221, 221);
+        --comments-color-text: rgb(17, 24, 39);
+        --comments-color-text-dimmed: rgb(156, 163, 175);
+        --comments-color-text-inverse: white;
+        --comments-color-accent: rgba(67, 56, 202);
+        --comments-color-accent-hover: rgba(67, 56, 202, 0.8);
+        --comments-color-danger: rgb(225, 29, 72);
+        --comments-color-danger-hover: rgb(225, 29, 72, 0.8);
+        --comments-color-success: rgb(10, 200, 134);
+        --comments-color-success-hover: rgb(10, 200, 134, 0.8);
+        --comments-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+    }
+
+    @media (min-width: 768px) {
+        :root {
+            --comments-avatar-size: 2.5rem;
+            --comments-avatar-margin: 0.75rem;
+        }
+    }
+
+    .comments {
+        color: var(--comments-color-text);
+    }
+
+    .comments-avatar {
+        width: var(--comments-avatar-size);
+        height: var(--comments-avatar-size);
+        border-radius: var(--comments-avatar-size);
+        margin-right: var(--comments-avatar-margin);
+    }
+
+    /** Added to win agains Tailwind CDN specificity */
+    .comments-button.comments-button {
+        border-radius: var(--comments-border-radius);
+        color: var(--comments-color-text-inverse);
+        background-color: var(--comments-color-accent);
+        padding: 0.25rem 0.75rem;
+        font-weight: 500;
+        line-height: 1.35;
+        transition: background 150ms;
+    }
+
+    .comments-button:hover {
+        background-color: var(--comments-color-accent-hover);
+    }
+
+    .comments-button.is-small {
+        padding: 0.15rem 0.5rem;
+        font-size: 0.8rem;
+    }
+
+    .comments-button.is-link {
+        background-color: transparent;
+        color: var(--comments-color-text-dimmed);
+        text-decoration: underline;
+    }
+
+    .comments-button.is-danger {
+        background-color: var(--comments-color-danger);
+    }
+
+    .comments-button.is-danger:hover {
+        background-color: var(--comments-color-danger-hover);
+    }
+
+    .comments-button.is-success {
+        background-color: var(--comments-color-success);
+    }
+
+    .comments-button.is-success:hover {
+        background-color: var(--comments-color-success-hover);
+    }
+
+    .comments-button svg {
+        stroke: var(--comments-color-text-inverse);
+    }
+
+    .comments-comment {
+        display: flex;
+    }
+
+    .comments-nested .comments-comment {
+        background-color: var(--comments-color-background-nested);
+        padding: 0;
+    }
+
+    .comments-comment-inner {
+        flex-grow: 1;
+    }
+
+    .comments-comment-header {
+        position: relative;
+        font-weight: 500;
+        color: var(--comments-color-text);
+        margin-bottom: 0.5rem;
+    }
+
+    @media (min-width: 768px) {
+        .comments-comment-header {
+            display: flex;
+            align-items: baseline;
+        }
+    }
+
+    .comments-comment-header-actions {
+        display: flex;
+        flex-wrap: wrap;
+        color: var(--comments-color-text-dimmed);
+        font-size: 0.8rem;
+    }
+
+    @media (min-width: 768px) {
+        .comments-comment-header-actions {
+            margin-left: 0.5rem;
+        }
+    }
+
+    .comments-comment-header-actions li {
+        display: flex;
+        position: relative;
+    }
+
+    .comments-comment-header-actions li:not(:last-child):after {
+        content: "•";
+        margin: 0 0.25rem;
+    }
+
+    .comments-comment-header-actions li>a:hover,
+    .comments-comment-header-actions li>button:hover {
+        text-decoration: underline;
+    }
+
+    .comments-comment-header-copied {
+        position: absolute;
+        left: 0;
+        bottom: 100%;
+        font-size: 0.65rem;
+        white-space: nowrap;
+        color: var(--comments-color-success);
+    }
+
+    .comments-error {
+        margin-top: 0.5rem;
+        font-size: 0.875rem;
+        color: var(--comments-color-danger);
+    }
+
+    .comments-form {
+        display: flex;
+        position: relative;
+    }
+
+    .comments-form-inner {
+        flex-grow: 1;
+    }
+
+    .comments-form-inner button {
+        margin-top: 0.5rem;
+    }
+
+    .comments-form-editor-tip {
+        color: var(--comments-color-text-dimmed);
+        font-size: 0.8rem;
+        padding: 0.25rem 0;
+        text-align: right;
+    }
+
+    .comments-form-editor-tip a {
+        text-decoration: underline;
+    }
+
+    .comments-newest-first>.comments-form {
+        margin-bottom: var(--comments-spacing);
+    }
+
+    .comments-group {
+        position: relative;
+        padding-bottom: var(--comments-spacing);
+        margin-bottom: var(--comments-spacing);
+    }
+
+    .comments-group:target {
+        margin-top: calc(-1 * var(--comments-spacing));
+        margin-left: calc(-0.5 * var(--comments-spacing));
+        margin-right: calc(-0.5 * var(--comments-spacing));
+        padding-top: var(--comments-spacing);
+        padding-left: calc(0.5 * var(--comments-spacing));
+        padding-right: calc(0.5 * var(--comments-spacing));
+        animation: highlight 1.5s ease-in-out;
+        border: solid 1px var(--comments-color-accent);
+        border-radius: var(--comments-border-radius);
+    }
+
+    @keyframes highlight {
+        0% {
+            transform: scale(1);
+        }
+
+        5% {
+            transform: scale(1);
+        }
+
+        15% {
+            transform: scaleX(1.015);
+        }
+
+        50% {
+            transform: scale(1);
+        }
+
+        100% {
+            transform: scale(1);
+        }
+    }
+
+    .comments-group:after {
+        content: "";
+        position: absolute;
+        bottom: 0;
+        right: 0;
+        left: 0;
+        border-bottom: 1px solid var(--comments-color-border);
+    }
+
+    .comments-group.comments-group-with-avatars:after {
+        /* Offset the border to stay lined up with the avatar */
+        left: calc(var(--comments-avatar-size) + var(--comments-avatar-margin));
+    }
+
+    .comments-group .comments-group {
+        padding-bottom: 0;
+        margin-top: calc(var(--comments-spacing) * 0.66);
+        margin-bottom: 0;
+    }
+
+    .comments-group .comments-group:after {
+        content: none;
+    }
+
+    .comments-header {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: var(--comments-spacing);
+    }
+
+    .comments-header strong {
+        font-size: 1.125rem;
+        font-weight: 500;
+    }
+
+    .comments-icon {
+        height: 1.25rem;
+        width: 1.25rem;
+        stroke: var(--comments-color-text);
+    }
+
+    .comments-approval {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 2rem;
+        background-color: var(--comments-color-background-info);
+        border-radius: var(--comments-border-radius);
+        padding: 0.5rem;
+        font-size: 0.8rem;
+        margin-bottom: 0.5rem;
+    }
+
+    .comments-approval-buttons {
+        display: flex;
+        align-items: center;
+        gap: 0.25rem;
+    }
+
+    .comments-modal {
+        position: absolute;
+        z-index: var(--comments-z-modal);
+        color: var(--comments-color-text);
+        font-size: 1rem;
+        background-color: var(--comments-color-background);
+        box-shadow: var(--comments-shadow);
+        border-radius: var(--comments-border-radius);
+        top: 0;
+        right: 0;
+        padding: 1rem;
+    }
+
+    .comments-modal.is-left {
+        right: auto;
+        left: 0;
+    }
+
+    .comments-modal.is-bottom {
+        top: 100%;
+    }
+
+    .comments-modal.is-compact {
+        padding: 0.5rem;
+    }
+
+    .comments-modal-title {
+        font-weight: 500;
+        white-space: nowrap;
+    }
+
+    .comments-modal-contents {
+        font-weight: normal;
+        line-height: 1.25;
+    }
+
+    .comments-modal-contents p {
+        margin-bottom: 0.5rem;
+        min-width: 8rem;
+    }
+
+    @media (min-width: 768px) {
+        .comments-modal-contents p {
+            min-width: 12rem;
+        }
+    }
+
+    .comments-modal-contents .comments-button {
+        float: right;
+    }
+
+    .comments-nested {
+        margin-top: calc(var(--comments-spacing) * 0.66);
+        padding-left: calc(var(--comments-avatar-size) + var(--comments-avatar-margin));
+    }
+
+    .comments-no-comment-yet {
+        text-align: center;
+        margin: 2rem 0 4rem 0;
+        color: var(--comments-color-text-dimmed);
+    }
+
+    .comments-placeholder,
+    .comments-textarea {
+        border: 1px solid var(--comments-color-border);
+        border-radius: 4px;
+        width: 100%;
+        padding: 10px;
+        height: var(--comments-avatar-size);
+    }
+
+    .comments-placeholder:focus {
+        outline: none;
+    }
+
+    .comments-reactions {
+        position: relative;
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: 0.5rem;
+        margin-top: 0.75rem;
+    }
+
+    .comments-reaction {
+        display: flex;
+        align-items: center;
+        white-space: nowrap;
+        border-radius: var(--comments-border-radius);
+        cursor: pointer;
+        background-color: var(--comments-color-reaction);
+        padding: 0 0.5rem;
+        height: 1.5rem;
+        font-size: 0.8rem;
+        transition: background 150ms;
+    }
+
+    .comments-reaction:hover {
+        background-color: var(--comments-color-reaction-hover);
+    }
+
+    .comments-reaction.is-reacted {
+        border: 1px solid var(--comments-color-accent);
+        background-color: var(--comments-color-reacted);
+    }
+
+    .comments-reaction.is-reacted:hover {
+        background-color: var(--comments-color-reacted-hover);
+    }
+
+    .comments-reaction-picker {
+        position: relative;
+    }
+
+    /** Added to win agains Tailwind CDN specificity */
+    .comments-reaction-picker-trigger.comments-reaction-picker-trigger {
+        display: flex;
+        align-items: center;
+        height: 1.5rem;
+        padding: 0 0.5rem;
+        cursor: pointer;
+        border-radius: var(--comments-border-radius);
+        background-color: var(--comments-color-reaction);
+        transition: background 150ms;
+    }
+
+    .comments-reaction-picker-trigger:hover {
+        background-color: var(--comments-color-reaction-hover);
+    }
+
+    .comments-reaction-picker-reactions {
+        display: grid;
+        gap: 0.25rem;
+    }
+
+    @media (min-width: 480px) {
+        .comments-reaction-picker-reactions {
+            grid-template-columns: repeat(2, 1fr);
+        }
+    }
+
+    @media (min-width: 768px) {
+        .comments-reaction-picker-reactions {
+            grid-template-columns: repeat(5, 1fr);
+        }
+    }
+
+    .comments-reaction-picker-reaction {
+        height: 1.75rem;
+        padding: 0 0.25rem;
+        border-radius: var(--comments-border-radius);
+        cursor: pointer;
+        transition: background 150ms;
+    }
+
+    .comments-reaction-picker-reaction:hover {
+        background-color: var(--comments-color-reaction);
+    }
+
+    .comments-reaction-picker-reaction.is-reacted {
+        background-color: var(--comments-color-reacted);
+    }
+
+    .comments-reaction-picker-reaction.is-reacted:hover {
+        background-color: var(--comments-color-reacted-hover);
+    }
+
+    .comments-reply {
+        margin-top: calc(var(--comments-spacing) * 0.66);
+    }
+
+    .comments-subscription {
+        position: relative;
+        margin-left: auto;
+        font-size: 0.8rem;
+    }
+
+    .comments-subscription-trigger {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.25rem;
+        padding: 0.25rem 0.5rem;
+        border-radius: var(--comments-border-radius);
+        background-color: var(--comments-color-reaction);
+        font-weight: 600;
+        transition: background 150ms;
+    }
+
+    .comments-subscription-trigger:hover {
+        background-color: var(--comments-color-reaction-hover);
+    }
+
+    .comments-subscription-item {
+        width: 100%;
+        padding: 0.5rem 1rem;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        cursor: pointer;
+        font-size: 0.8rem;
+        font-weight: 500;
+        text-align: left;
+        white-space: nowrap;
+        border-radius: var(--comments-border-radius);
+        transition: background 150ms;
+    }
+
+    .comments-subscription-item:hover {
+        background-color: var(--comments-color-reaction);
+    }
+
+    .comment-text {
+        max-width: calc(100% - var(--comments-avatar-size));
+    }
+
+    .comment-text>*,
+    .comments-comment-inner {
+        max-width: 100%;
+    }
+
+    .comment-text code {
+        padding: 0.2rem 0.5rem;
+        background-color: var(--comments-color-background-paper);
+        border-radius: 0.3rem;
+    }
+
+    .comment-text .shiki {
+        font-size: 0.85rem;
+    }
+
+    .comment-text .shiki code {
+        padding: 0;
+        background-color: transparent;
+    }
+
+    .comment-text .shiki {
+        padding: 0.5rem;
+        margin: 0.5rem 0;
+        border-radius: 0.2rem;
+        background-color: var(--comments-color-background-paper) !important;
+        overflow: hidden;
+        overflow-x: scroll;
+    }
+
+    .comment-text a {
+        color: var(--comments-color-accent);
+        text-decoration: underline;
+    }
+
+    .comment-text>*:not(:first-child),
+    .comment-text blockquote>*:not(:first-child),
+    .comment-text ul>*:not(:first-child):not(li),
+    .comment-text ol>*:not(:first-child):not(li) {
+        margin-top: 0.5rem;
+    }
+
+    .comment-text h1 {
+        font-size: 2rem;
+        font-weight: bold;
+    }
+
+    .comment-text h2 {
+        font-size: 1.7rem;
+        font-weight: bold;
+    }
+
+    .comment-text h3 {
+        font-size: 1.5rem;
+        font-weight: bold;
+    }
+
+    .comment-text h4 {
+        font-size: 1.3rem;
+        font-weight: bold;
+    }
+
+    .comment-text h5 {
+        font-size: 1.1rem;
+        font-weight: bold;
+    }
+
+    .comment-text h6 {
+        font-size: 1rem;
+        font-weight: bold;
+    }
+
+    .comment-text blockquote {
+        background-color: var(--comments-color-background-paper);
+        padding: 1rem;
+        border-left: solid 3px var(--comments-color-border);
+    }
+
+    .comment-text ul,
+    .comment-text ol {
+        padding-left: 1rem;
+    }
+
+    .comment-text ul li {
+        list-style: circle;
+    }
+
+    .comment-text ol li {
+        list-style: decimal;
+    }
+
+    .comments-textarea {
+        min-height: 10rem;
+    }
+
+    /* EasyMDE buttons */
+    .comments .CodeMirror {
+        border-color: var(--comments-color-border);
+    }
+
+    .comments .CodeMirror-scroll,
+    .CodeMirror {
+        min-height: 10rem !important;
+    }
+
+    .comments .editor-toolbar {
+        border-color: var(--comments-color-border);
+        padding: 0.35rem;
+    }
+
+    .comments .editor-toolbar .separator {
+        border-left-color: var(--comments-color-border);
+    }
+
+    .comments .editor-toolbar button {
+        border: none;
+        transition: background 150ms;
+    }
+
+    .comments .editor-toolbar button:hover {
+        background-color: var(--comments-color-reaction);
+    }
+
+    .comments .editor-toolbar button.active {
+        background-color: var(--comments-color-reaction-hover);
+    }
+</style>
+            <style>
+            .toggle-switch {
+                position: relative;
+                display: inline-block;
+                width: 48px;
+                height: 24px;
+            }
+
+            .toggle-switch input {
+                opacity: 0;
+                width: 0;
+                height: 0;
+            }
+
+            .toggle-slider {
+                position: absolute;
+                cursor: pointer;
+                inset: 0;
+                background-color: #334155;
+                transition: 0.3s;
+                border-radius: 24px;
+            }
+
+            .toggle-slider:before {
+                position: absolute;
+                content: "";
+                height: 20px;
+                width: 20px;
+                left: 2px;
+                bottom: 2px;
+                background-color: white;
+                transition: 0.3s;
+                border-radius: 50%;
+            }
+
+            input:checked+.toggle-slider {
+                background-color: #3b82f6;
+            }
+
+            input:checked+.toggle-slider:before {
+                transform: translateX(24px);
+            }
+        </style>
+            <style>
+            /* EasyMDE Dark Theme Styling - Matching slate-800 container */
+            .easymde-wrapper {
+                width: 100%;
+            }
+
+            .easymde-wrapper .EasyMDEContainer {
+                background-color: transparent;
+                border-radius: 0.5rem;
+                overflow: visible;
+                width: 100%;
+            }
+
+            /* Toolbar styling */
+            .easymde-wrapper .editor-toolbar {
+                background-color: rgb(30 41 59) !important;
+                /* slate-800 */
+                border: 1px solid rgb(51 65 85) !important;
+                /* slate-700 */
+                border-bottom: none !important;
+                border-top-left-radius: 0.5rem !important;
+                border-top-right-radius: 0.5rem !important;
+                padding: 0.5rem 0.75rem !important;
+                margin: 0 !important;
+                opacity: 1 !important;
+            }
+
+            .easymde-wrapper .editor-toolbar::before,
+            .easymde-wrapper .editor-toolbar::after {
+                display: none !important;
+            }
+
+            .easymde-wrapper .editor-toolbar button {
+                color: rgb(148 163 184) !important;
+                /* slate-400 */
+                border: none !important;
+                border-radius: 0.375rem !important;
+                width: 32px !important;
+                height: 32px !important;
+                margin: 0 2px !important;
+                background: transparent !important;
+            }
+
+            .easymde-wrapper .editor-toolbar button:hover {
+                background-color: rgb(51 65 85) !important;
+                /* slate-700 */
+                color: #fff !important;
+            }
+
+            .easymde-wrapper .editor-toolbar button.active {
+                background-color: rgb(71 85 105) !important;
+                /* slate-600 */
+                color: #fff !important;
+            }
+
+            .easymde-wrapper .editor-toolbar button:disabled {
+                opacity: 0.3 !important;
+            }
+
+            .easymde-wrapper .editor-toolbar.disabled-for-preview button:not(.no-disable) {
+                opacity: 0.3 !important;
+            }
+
+            .easymde-wrapper .editor-toolbar i.separator {
+                border-left-color: rgb(51 65 85) !important;
+                /* slate-700 */
+                border-right: none !important;
+                margin: 0 8px !important;
+            }
+
+            /* Editor area styling */
+            .easymde-wrapper .CodeMirror {
+                background-color: rgb(15 23 42) !important;
+                /* slate-900 */
+                border: 1px solid rgb(51 65 85) !important;
+                /* slate-700 */
+                border-top: none !important;
+                border-bottom-left-radius: 0.5rem !important;
+                border-bottom-right-radius: 0.5rem !important;
+                border-top-left-radius: 0 !important;
+                border-top-right-radius: 0 !important;
+                color: rgb(226 232 240) !important;
+                /* slate-200 */
+                min-height: 120px !important;
+                font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif !important;
+                font-size: 0.9375rem !important;
+                line-height: 1.6 !important;
+                height: auto !important;
+                padding: 0 !important;
+            }
+
+            .easymde-wrapper .CodeMirror-scroll {
+                min-height: 120px !important;
+                overflow: auto !important;
+                padding: 0 !important;
+                margin: 0 !important;
+            }
+
+            .easymde-wrapper .CodeMirror-sizer {
+                border: none !important;
+                min-height: auto !important;
+                margin-left: 0 !important;
+                margin-right: 0 !important;
+                padding-right: 0 !important;
+            }
+
+            .easymde-wrapper .CodeMirror .CodeMirror-code {
+                padding: 0 !important;
+            }
+
+            .easymde-wrapper .CodeMirror-lines {
+                padding: 1rem !important;
+                cursor: text;
+            }
+
+            .easymde-wrapper .CodeMirror pre.CodeMirror-line,
+            .easymde-wrapper .CodeMirror pre.CodeMirror-line-like {
+                padding: 0 !important;
+                word-wrap: break-word !important;
+                white-space: pre-wrap !important;
+                word-break: normal !important;
+            }
+
+            .easymde-wrapper .CodeMirror-gutters {
+                display: none !important;
+                background-color: transparent !important;
+                border: none !important;
+            }
+
+            .easymde-wrapper .CodeMirror-linenumber {
+                display: none !important;
+            }
+
+            .easymde-wrapper .CodeMirror-cursor {
+                border-left: 2px solid rgb(96 165 250) !important;
+                /* blue-400 */
+            }
+
+            .easymde-wrapper .CodeMirror-placeholder {
+                color: rgb(100 116 139) !important;
+                /* slate-500 */
+                opacity: 1 !important;
+            }
+
+            /* Focus state - subtle glow */
+            .easymde-wrapper .CodeMirror-focused {
+                outline: none !important;
+            }
+
+            .easymde-wrapper:focus-within .editor-toolbar {
+                border-color: rgb(59 130 246 / 0.5) !important;
+                /* blue-500/50 */
+            }
+
+            .easymde-wrapper:focus-within .CodeMirror {
+                border-color: rgb(59 130 246 / 0.5) !important;
+                /* blue-500/50 */
+                box-shadow: 0 0 0 3px rgb(59 130 246 / 0.1) !important;
+            }
+
+            .easymde-wrapper .CodeMirror-selected {
+                background-color: rgb(59 130 246 / 0.2) !important;
+                /* blue selection */
+            }
+
+            .easymde-wrapper .CodeMirror-line {
+                color: rgb(226 232 240) !important;
+                /* slate-200 */
+            }
+
+            /* Remove default CodeMirror wrap border radius override */
+            .easymde-wrapper .CodeMirror-wrap {
+                border-radius: 0 !important;
+            }
+
+            /* Ensure text wrapping works properly */
+            .easymde-wrapper .CodeMirror-wrap pre {
+                word-wrap: break-word !important;
+                white-space: pre-wrap !important;
+                word-break: normal !important;
+            }
+
+            /* Make sure vscrollbar doesn't push content */
+            .easymde-wrapper .CodeMirror-vscrollbar {
+                display: none !important;
+            }
+
+            .easymde-wrapper .CodeMirror-hscrollbar {
+                display: none !important;
+            }
+
+            /* Markdown syntax highlighting */
+            .easymde-wrapper .cm-s-easymde .cm-header {
+                color: rgb(96 165 250) !important;
+                /* blue-400 */
+            }
+
+            .easymde-wrapper .cm-s-easymde .cm-quote {
+                color: rgb(148 163 184) !important;
+                /* slate-400 */
+                font-style: italic;
+            }
+
+            .easymde-wrapper .cm-s-easymde .cm-link {
+                color: rgb(96 165 250) !important;
+                /* blue-400 */
+            }
+
+            .easymde-wrapper .cm-s-easymde .cm-url {
+                color: rgb(52 211 153) !important;
+                /* emerald-400 */
+            }
+
+            .easymde-wrapper .cm-s-easymde .cm-strong {
+                color: rgb(248 250 252) !important;
+                /* slate-50 */
+                font-weight: 600;
+            }
+
+            .easymde-wrapper .cm-s-easymde .cm-em {
+                color: rgb(203 213 225) !important;
+                /* slate-300 */
+            }
+
+            .easymde-wrapper .cm-s-easymde .cm-comment {
+                color: rgb(100 116 139) !important;
+                /* slate-500 */
+            }
+
+            .easymde-wrapper .cm-s-easymde .cm-tag {
+                color: rgb(251 146 60) !important;
+                /* orange-400 */
+            }
+
+            .easymde-wrapper .cm-s-easymde .cm-attribute {
+                color: rgb(167 139 250) !important;
+                /* violet-400 */
+            }
+
+            .easymde-wrapper .cm-s-easymde .cm-string {
+                color: rgb(52 211 153) !important;
+                /* emerald-400 */
+            }
+        </style>
+    
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async="" src="./15 - Partial Widgets - Code Refactoring _ Laravel Daily_files/js(1)"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'UA-64361490-1');
+    </script>
+    <script src="./15 - Partial Widgets - Code Refactoring _ Laravel Daily_files/api.js"></script>
+    <!-- Matomo -->
+<script>
+  var _paq = window._paq = window._paq || [];
+  /* tracker methods like "setCustomDimension" should be called before "trackPageView" */
+    _paq.push(['setUserId', '21564']);
+    _paq.push(['trackPageView']);
+  _paq.push(['enableLinkTracking']);
+  (function() {
+    var u="//analytics.laraveldaily.com/";
+    _paq.push(['setTrackerUrl', u+'matomo.php']);
+    _paq.push(['setSiteId', '1']);
+        var d=document, g=d.createElement('script'), s=d.getElementsByTagName('script')[0];
+    g.async=true; g.src=u+'matomo.js'; s.parentNode.insertBefore(g,s);
+  })();
+</script>
+<!-- End Matomo Code -->
+        <script>
+        window.addEventListener('refresh-page', function (event) {
+            window.location.reload(false);
+        });
+    </script>
+<link rel="stylesheet" href="./15 - Partial Widgets - Code Refactoring _ Laravel Daily_files/font-awesome.min.css"><link rel="stylesheet" href="./15 - Partial Widgets - Code Refactoring _ Laravel Daily_files/font-awesome.min.css"></head>
+
+<body class="bg-slate-950 text-white antialiased">
+    <!-- Skip to main content -->
+    <a href="#main-content" class="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-50 focus:px-4 focus:py-2 focus:bg-blue-600 focus:text-white focus:rounded-lg">Ga naar hoofdinhoud</a>
+
+<!-- Local Site Navigation (FDC) -->
+<header class="sticky top-0 z-50 backdrop-blur bg-slate-950/70 border-b border-slate-800">
+  <div class="max-w-7xl mx-auto px-4 py-3 flex items-center justify-between">
+    <a href="../index.html" class="font-semibold tracking-tight">FDC • MBO Utrecht</a>
+    <nav class="text-sm flex gap-4 flex-wrap justify-end">
+      <a class="hover:text-white text-slate-200" href="../dashboard.html">Dashboard</a>
+      <a class="hover:text-white text-slate-200" href="../start-hier.html">Start hier</a>
+      <a class="hover:text-white text-slate-200" href="../challenge.html">De Challenge</a>
+      <a class="hover:text-white text-slate-200" href="../tutorials.html">Tutorials</a>
+      <a class="hover:text-white text-slate-200" href="../certificaat.html">Certificaat</a>
+    </nav>
+  </div>
+</header>
+
+    <div x-data="{ sidebar: localStorage.getItem(&#39;lesson.sidebar.visible&#39;) !== &#39;false&#39; }" x-init="$watch(&#39;sidebar&#39;, value =&gt; localStorage.setItem(&#39;lesson.sidebar.visible&#39;, value))">
+        <!-- Lesson Header -->
+        <header class="hero-gradient pt-8 pb-6 px-6 relative overflow-hidden">
+            <div class="max-w-7xl mx-auto relative z-10">
+                <div class="flex items-center gap-3 mb-4">
+                    <h1 class="text-3xl lg:text-4xl font-bold">
+                        Partial Widgets - Code Refactoring
+                    </h1>
+                                                                                </div>
+
+                <!-- Lesson Controls -->
+                <div class="flex flex-wrap items-center gap-6">
+                    <div class="flex items-center gap-2">
+                                                    <a href="14 - Editing Categories _ Laravel Daily.html" class="inline-flex items-center justify-center w-9 h-9 text-gray-300 bg-slate-700 hover:bg-slate-600 rounded-lg border-t border-slate-600 transition" aria-label="Vorige les">
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
+                                </svg>
+                            </a>
+                                                                            <a href="16 - Real Time List Updates _ Laravel Daily.html" class="inline-flex items-center justify-center w-9 h-9 text-gray-300 bg-slate-700 hover:bg-slate-600 rounded-lg border-t border-slate-600 transition lesson--complete--next" aria-label="Volgende les">
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path>
+                                </svg>
+                            </a>
+                                            </div>
+
+                    <div class="flex items-center gap-2 text-gray-300 text-sm">
+                        <span>Les
+                            15/26</span>
+                        <span class="text-gray-500">•</span>
+                        <svg class="w-4 h-4 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                        </svg>
+                        <span>8 min leestijd</span>
+                    </div>
+
+                    <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 md:ml-auto w-full sm:w-auto">
+                        <!-- Autoplay toggle - first on desktop, second row (below) on mobile (right-aligned) -->
+                        <div class="flex items-center gap-3 justify-end sm:justify-start order-1 sm:order-1" x-init="toggle = JSON.parse(localStorage.getItem(&#39;lesson.player.autoplay&#39;))" x-data="{ toggle: false }">
+                            <span class="text-sm text-gray-300">Automatisch afspelen</span>
+                            <label class="toggle-switch">
+                                <input type="checkbox" @click="toggle = !toggle; localStorage.setItem(&#39;lesson.player.autoplay&#39;, toggle)" :checked="toggle">
+                                <span class="toggle-slider"></span>
+                            </label>
+                        </div>
+
+                        <!-- Show/Hide List + Complete Button - first row on mobile, after autoplay on desktop -->
+                        <div class="flex items-center gap-3 order-0 sm:order-2">
+                            <button class="inline-flex items-center gap-2 px-4 py-2 text-sm font-semibold text-white bg-gray-700 hover:bg-gray-600 rounded-lg transition focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-400" x-on:click="sidebar = !sidebar">
+                                <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+                                </svg>
+                                <span x-text="sidebar ? &#39;Verberg lessenlijst&#39; : &#39;Toon lessenlijst&#39;">Verberg lessenlijst</span>
+                            </button>
+</div>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- Laser Divider -->
+        <div class="h-px bg-gradient-to-r from-transparent via-blue-500/50 to-transparent"></div>
+
+        <!-- Main Content -->
+        <main id="main-content" class="section-gradient py-8 px-6">
+            <div class="max-w-7xl mx-auto">
+                <div class="block lg:grid lg:grid-cols-12 gap-8">
+                    <!-- Left Column: Locked Content -->
+                    <div :class="{ &#39;lg:col-span-8&#39;: sidebar, &#39;lg:col-span-12&#39;: !sidebar }" class="lg:col-span-8">
+
+                        
+                        
+                                                    <article class="prose prose-invert">
+                                <p>If we look at our <code>categories_list.dart</code> file - it is getting a bit long. So let's make this lesson about refactoring some code into separate files. Here's what we will do:</p>
+<ul>
+<li>Move our <code>Model</code> into its own file</li>
+<li>Move all of our API calls into a service file</li>
+<li>Move the Category Edit button into its own file (along with all the logic)</li>
+</ul>
+<p>These actions will set us up for a more modular and maintainable codebase.</p>
+<hr>
+<h2>Moving Category Model</h2>
+<p>Let's start by moving our simplest code - the <code>Category</code> model. Create a new file in the <code>models</code> directory called <code>category.dart</code>. Copy the <code>Category</code> class from <code>categories_list.dart</code> into this new file.</p>
+<p><strong>lib/models/category.dart</strong></p>
+<div class="relative code-block-wrapper"><pre><code data-theme="olaolu-palenight" data-lang="dart" class="torchlight" style="background-color: #292D3E; --theme-selection-background: #7580B850;" id="clipText-0"><!-- Syntax highlighted by torchlight.dev --><div class="line"><span style="color: #C792EA;">class</span><span style="color: #BFC7D5;"> </span><span style="color: #FFCB6B;">Category</span><span style="color: #BFC7D5;"> {</span></div><div class="line"><span style="color: #BFC7D5;">  </span><span style="color: #C792EA;">final</span><span style="color: #BFC7D5;"> </span><span style="color: #FFCB6B;">int</span><span style="color: #BFC7D5;"> id;</span></div><div class="line"><span style="color: #BFC7D5;">  </span><span style="color: #C792EA;">final</span><span style="color: #BFC7D5;"> </span><span style="color: #FFCB6B;">String</span><span style="color: #BFC7D5;"> name;</span></div><div class="line">&nbsp;</div><div class="line"><span style="color: #BFC7D5;">  </span><span style="color: #FFCB6B;">Category</span><span style="color: #BFC7D5;">({</span><span style="color: #C792EA;">required</span><span style="color: #BFC7D5;"> </span><span style="color: #FF5572;">this</span><span style="color: #BFC7D5;">.id, </span><span style="color: #C792EA;">required</span><span style="color: #BFC7D5;"> </span><span style="color: #FF5572;">this</span><span style="color: #BFC7D5;">.name});</span></div><div class="line">&nbsp;</div><div class="line"><span style="color: #BFC7D5;">  </span><span style="color: #C792EA;">factory</span><span style="color: #BFC7D5;"> </span><span style="color: #FFCB6B;">Category</span><span style="color: #BFC7D5;">.</span><span style="color: #82AAFF;">fromJson</span><span style="color: #BFC7D5;">(</span><span style="color: #FFCB6B;">Map</span><span style="color: #C792EA;">&lt;</span><span style="color: #FFCB6B;">String</span><span style="color: #BFC7D5;">, </span><span style="color: #FFCB6B;">dynamic</span><span style="color: #C792EA;">&gt;</span><span style="color: #BFC7D5;"> json) {</span></div><div class="line"><span style="color: #BFC7D5;">    </span><span style="color: #C792EA;">return</span><span style="color: #BFC7D5;"> </span><span style="color: #FFCB6B;">Category</span><span style="color: #BFC7D5;">(id</span><span style="color: #89DDFF;">:</span><span style="color: #BFC7D5;"> json[</span><span style="color: #C3E88D;">'id'</span><span style="color: #BFC7D5;">], name</span><span style="color: #89DDFF;">:</span><span style="color: #BFC7D5;"> json[</span><span style="color: #C3E88D;">'name'</span><span style="color: #BFC7D5;">]);</span></div><div class="line"><span style="color: #BFC7D5;">  }</span></div><div class="line"><span style="color: #BFC7D5;">}</span></div></code></pre><button id="clipButton-0" class="md:block hidden copyBtn" aria-label="Kopieer naar klembord" title="Kopieer naar klembord" data-clipboard-target="#clipText-0"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="fill-current text-white w-6 h-6"><path fill-rule="evenodd" d="M10.5 3A1.501 1.501 0 009 4.5h6A1.5 1.5 0 0013.5 3h-3zm-2.693.178A3 3 0 0110.5 1.5h3a3 3 0 012.694 1.678c.497.042.992.092 1.486.15 1.497.173 2.57 1.46 2.57 2.929V19.5a3 3 0 01-3 3H6.75a3 3 0 01-3-3V6.257c0-1.47 1.073-2.756 2.57-2.93.493-.057.989-.107 1.487-.15z" clip-rule="evenodd"></path></svg></button></div>
+<p>Then, remove the <code>Category</code> class from <code>categories_list.dart</code> and import it from the new file:</p>
+<p><strong>lib/screens/categories_list.dart</strong></p>
+<div class="relative code-block-wrapper"><pre><code data-theme="olaolu-palenight" data-lang="dart" class="torchlight has-add-lines has-remove-lines has-diff-lines" style="background-color: #292D3E; --theme-selection-background: #7580B850;" id="clipText-1"><!-- Syntax highlighted by torchlight.dev --><div class="line"><span style="color: #C792EA;">import</span><span style="color: #BFC7D5;"> </span><span style="color: #C3E88D;">'package:flutter/material.dart'</span><span style="color: #BFC7D5;">;</span></div><div class="line"><span style="color: #C792EA;">import</span><span style="color: #BFC7D5;"> </span><span style="color: #C3E88D;">'package:http/http.dart'</span><span style="color: #BFC7D5;"> </span><span style="color: #C792EA;">as</span><span style="color: #BFC7D5;"> http;</span></div><div class="line"><span style="color: #C792EA;">import</span><span style="color: #BFC7D5;"> </span><span style="color: #C3E88D;">'dart:convert'</span><span style="color: #BFC7D5;">;</span></div><div class="line line-add line-has-background" style="background-color: #99b76d23"><span style="color: #C3E88D;">import</span><span style="color: #C3E88D;"> </span><span style="color: #C3E88D;">'package:laravel_api_flutter_app/models/category.dart'</span><span style="color: #C3E88D;">;</span></div><div class="line">&nbsp;</div><div class="line line-remove line-has-background" style="background-color: #ef535033"><span style="color: #f07178;">class</span><span style="color: #f07178;"> </span><span style="color: #f07178;">Category</span><span style="color: #f07178;"> {</span></div><div class="line line-remove line-has-background" style="background-color: #ef535033"><span style="color: #f07178;">  </span><span style="color: #f07178;">final</span><span style="color: #f07178;"> </span><span style="color: #f07178;">int</span><span style="color: #f07178;"> id;</span></div><div class="line line-remove line-has-background" style="background-color: #ef535033"><span style="color: #f07178;">  </span><span style="color: #f07178;">final</span><span style="color: #f07178;"> </span><span style="color: #f07178;">String</span><span style="color: #f07178;"> name;</span></div><div class="line line-remove line-has-background" style="background-color: #ef535033">&nbsp;</div><div class="line line-remove line-has-background" style="background-color: #ef535033"><span style="color: #f07178;">  </span><span style="color: #f07178;">Category</span><span style="color: #f07178;">({</span><span style="color: #f07178;">required</span><span style="color: #f07178;"> </span><span style="color: #f07178;">this</span><span style="color: #f07178;">.id, </span><span style="color: #f07178;">required</span><span style="color: #f07178;"> </span><span style="color: #f07178;">this</span><span style="color: #f07178;">.name});</span></div><div class="line line-remove line-has-background" style="background-color: #ef535033">&nbsp;</div><div class="line line-remove line-has-background" style="background-color: #ef535033"><span style="color: #f07178;">  </span><span style="color: #f07178;">factory</span><span style="color: #f07178;"> </span><span style="color: #f07178;">Category</span><span style="color: #f07178;">.</span><span style="color: #f07178;">fromJson</span><span style="color: #f07178;">(</span><span style="color: #f07178;">Map</span><span style="color: #f07178;">&lt;</span><span style="color: #f07178;">String</span><span style="color: #f07178;">, </span><span style="color: #f07178;">dynamic</span><span style="color: #f07178;">&gt;</span><span style="color: #f07178;"> json) {</span></div><div class="line line-remove line-has-background" style="background-color: #ef535033"><span style="color: #f07178;">    </span><span style="color: #f07178;">return</span><span style="color: #f07178;"> </span><span style="color: #f07178;">Category</span><span style="color: #f07178;">(id</span><span style="color: #f07178;">:</span><span style="color: #f07178;"> json[</span><span style="color: #f07178;">'id'</span><span style="color: #f07178;">], name</span><span style="color: #f07178;">:</span><span style="color: #f07178;"> json[</span><span style="color: #f07178;">'name'</span><span style="color: #f07178;">]);</span></div><div class="line line-remove line-has-background" style="background-color: #ef535033"><span style="color: #f07178;">  }</span></div><div class="line line-remove line-has-background" style="background-color: #ef535033"><span style="color: #f07178;">}</span></div><div class="line">&nbsp;</div><div class="line"><span style="color: #697098;">// ...</span></div></code></pre><button id="clipButton-1" class="md:block hidden copyBtn" aria-label="Kopieer naar klembord" title="Kopieer naar klembord" data-clipboard-target="#clipText-1"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="fill-current text-white w-6 h-6"><path fill-rule="evenodd" d="M10.5 3A1.501 1.501 0 009 4.5h6A1.5 1.5 0 0013.5 3h-3zm-2.693.178A3 3 0 0110.5 1.5h3a3 3 0 012.694 1.678c.497.042.992.092 1.486.15 1.497.173 2.57 1.46 2.57 2.929V19.5a3 3 0 01-3 3H6.75a3 3 0 01-3-3V6.257c0-1.47 1.073-2.756 2.57-2.93.493-.057.989-.107 1.487-.15z" clip-rule="evenodd"></path></svg></button></div>
+<p>You can load up your application and see that everything works as expected. This moves the <code>Category</code> class into its own file for reusability.</p>
+<hr>
+<h2>Moving API Calls</h2>
+<p>Next, we have two API calls on our Categories List widget. While it is acceptable to have them there, we still have an issue with repeating code. For example, we repeat the URL for each call. So let's create a Service file to handle these API calls:</p>
+<p><strong>lib/services/api.dart</strong></p>
+<div class="relative code-block-wrapper"><pre><code data-theme="olaolu-palenight" data-lang="dart" class="torchlight" style="background-color: #292D3E; --theme-selection-background: #7580B850;" id="clipText-2"><!-- Syntax highlighted by torchlight.dev --><div class="line"><span style="color: #C792EA;">import</span><span style="color: #BFC7D5;"> </span><span style="color: #C3E88D;">'dart:convert'</span><span style="color: #BFC7D5;">;</span></div><div class="line"><span style="color: #C792EA;">import</span><span style="color: #BFC7D5;"> </span><span style="color: #C3E88D;">'package:http/http.dart'</span><span style="color: #BFC7D5;"> </span><span style="color: #C792EA;">as</span><span style="color: #BFC7D5;"> http;</span></div><div class="line"><span style="color: #C792EA;">import</span><span style="color: #BFC7D5;"> </span><span style="color: #C3E88D;">'package:laravel_api_flutter_app/models/category.dart'</span><span style="color: #BFC7D5;">;</span></div><div class="line">&nbsp;</div><div class="line"><span style="color: #C792EA;">class</span><span style="color: #BFC7D5;"> </span><span style="color: #FFCB6B;">ApiService</span><span style="color: #BFC7D5;"> {</span></div><div class="line"><span style="color: #BFC7D5;">  </span><span style="color: #FFCB6B;">ApiService</span><span style="color: #BFC7D5;">();</span></div><div class="line">&nbsp;</div><div class="line"><span style="color: #BFC7D5;">  </span><span style="color: #C792EA;">final</span><span style="color: #BFC7D5;"> </span><span style="color: #FFCB6B;">String</span><span style="color: #BFC7D5;"> baseUrl </span><span style="color: #C792EA;">=</span><span style="color: #BFC7D5;"> </span><span style="color: #C3E88D;">'https://78ac-78-58-236-130.ngrok-free.app/'</span><span style="color: #BFC7D5;">;</span></div><div class="line"><span style="color: #BFC7D5;">}</span></div></code></pre><button id="clipButton-2" class="md:block hidden copyBtn" aria-label="Kopieer naar klembord" title="Kopieer naar klembord" data-clipboard-target="#clipText-2"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="fill-current text-white w-6 h-6"><path fill-rule="evenodd" d="M10.5 3A1.501 1.501 0 009 4.5h6A1.5 1.5 0 0013.5 3h-3zm-2.693.178A3 3 0 0110.5 1.5h3a3 3 0 012.694 1.678c.497.042.992.092 1.486.15 1.497.173 2.57 1.46 2.57 2.929V19.5a3 3 0 01-3 3H6.75a3 3 0 01-3-3V6.257c0-1.47 1.073-2.756 2.57-2.93.493-.057.989-.107 1.487-.15z" clip-rule="evenodd"></path></svg></button></div>
+<p>Then, we can move the API calls from <code>categories_list.dart</code> into this new file:</p>
+<p><strong>lib/services/api.dart</strong></p>
+<div class="relative code-block-wrapper"><pre><code data-theme="olaolu-palenight" data-lang="dart" class="torchlight" style="background-color: #292D3E; --theme-selection-background: #7580B850;" id="clipText-3"><!-- Syntax highlighted by torchlight.dev --><div class="line"><span style="color: #697098;">// ...</span></div><div class="line">&nbsp;</div><div class="line"><span style="color: #BFC7D5;">  </span><span style="color: #FFCB6B;">Future</span><span style="color: #C792EA;">&lt;</span><span style="color: #FFCB6B;">List</span><span style="color: #C792EA;">&lt;</span><span style="color: #FFCB6B;">Category</span><span style="color: #89DDFF;">&gt;&gt;</span><span style="color: #BFC7D5;"> </span><span style="color: #82AAFF;">fetchCategories</span><span style="color: #BFC7D5;">() </span><span style="color: #C792EA;">async</span><span style="color: #BFC7D5;"> {</span></div><div class="line"><span style="color: #BFC7D5;">    </span><span style="color: #C792EA;">final</span><span style="color: #BFC7D5;"> http.</span><span style="color: #FFCB6B;">Response</span><span style="color: #BFC7D5;"> response </span><span style="color: #C792EA;">=</span></div><div class="line"><span style="color: #BFC7D5;">        </span><span style="color: #C792EA;">await</span><span style="color: #BFC7D5;"> http.</span><span style="color: #C792EA;">get</span><span style="color: #BFC7D5;">(</span><span style="color: #FFCB6B;">Uri</span><span style="color: #BFC7D5;">.</span><span style="color: #82AAFF;">parse</span><span style="color: #BFC7D5;">(</span><span style="color: #C3E88D;">'$</span><span style="color: #7986E7;">baseUrl</span><span style="color: #C3E88D;">/api/categories'</span><span style="color: #BFC7D5;">));</span></div><div class="line">&nbsp;</div><div class="line"><span style="color: #BFC7D5;">    </span><span style="color: #C792EA;">final</span><span style="color: #BFC7D5;"> </span><span style="color: #FFCB6B;">Map</span><span style="color: #C792EA;">&lt;</span><span style="color: #FFCB6B;">String</span><span style="color: #BFC7D5;">, </span><span style="color: #FFCB6B;">dynamic</span><span style="color: #C792EA;">&gt;</span><span style="color: #BFC7D5;"> data </span><span style="color: #C792EA;">=</span><span style="color: #BFC7D5;"> json.</span><span style="color: #82AAFF;">decode</span><span style="color: #BFC7D5;">(response.body);</span></div><div class="line">&nbsp;</div><div class="line"><span style="color: #BFC7D5;">    </span><span style="color: #C792EA;">if</span><span style="color: #BFC7D5;"> (</span><span style="color: #C792EA;">!</span><span style="color: #BFC7D5;">data.</span><span style="color: #82AAFF;">containsKey</span><span style="color: #BFC7D5;">(</span><span style="color: #C3E88D;">'data'</span><span style="color: #BFC7D5;">) </span><span style="color: #89DDFF;">||</span><span style="color: #BFC7D5;"> data[</span><span style="color: #C3E88D;">'data'</span><span style="color: #BFC7D5;">] </span><span style="color: #89DDFF;">is</span><span style="color: #C792EA;">!</span><span style="color: #BFC7D5;"> </span><span style="color: #FFCB6B;">List</span><span style="color: #BFC7D5;">) {</span></div><div class="line"><span style="color: #BFC7D5;">      </span><span style="color: #C792EA;">throw</span><span style="color: #BFC7D5;"> </span><span style="color: #FFCB6B;">Exception</span><span style="color: #BFC7D5;">(</span><span style="color: #C3E88D;">'Failed to load categories'</span><span style="color: #BFC7D5;">);</span></div><div class="line"><span style="color: #BFC7D5;">    }</span></div><div class="line">&nbsp;</div><div class="line"><span style="color: #BFC7D5;">    </span><span style="color: #FFCB6B;">List</span><span style="color: #BFC7D5;"> categories </span><span style="color: #C792EA;">=</span><span style="color: #BFC7D5;"> data[</span><span style="color: #C3E88D;">'data'</span><span style="color: #BFC7D5;">];</span></div><div class="line">&nbsp;</div><div class="line"><span style="color: #BFC7D5;">    </span><span style="color: #C792EA;">return</span><span style="color: #BFC7D5;"> categories.</span><span style="color: #82AAFF;">map</span><span style="color: #BFC7D5;">((category) </span><span style="color: #89DDFF;">=&gt;</span><span style="color: #BFC7D5;"> </span><span style="color: #FFCB6B;">Category</span><span style="color: #BFC7D5;">.</span><span style="color: #82AAFF;">fromJson</span><span style="color: #BFC7D5;">(category)).</span><span style="color: #82AAFF;">toList</span><span style="color: #BFC7D5;">();</span></div><div class="line"><span style="color: #BFC7D5;">  }</span></div><div class="line">&nbsp;</div><div class="line"><span style="color: #BFC7D5;">  </span><span style="color: #FFCB6B;">Future</span><span style="color: #BFC7D5;"> </span><span style="color: #82AAFF;">saveCategory</span><span style="color: #BFC7D5;">(id, name) </span><span style="color: #C792EA;">async</span><span style="color: #BFC7D5;"> {</span></div><div class="line"><span style="color: #BFC7D5;">    </span><span style="color: #FFCB6B;">String</span><span style="color: #BFC7D5;"> url </span><span style="color: #C792EA;">=</span><span style="color: #BFC7D5;"> </span><span style="color: #C3E88D;">'$</span><span style="color: #7986E7;">baseUrl</span><span style="color: #C3E88D;">/api/categories/$</span><span style="color: #7986E7;">id</span><span style="color: #C3E88D;">'</span><span style="color: #BFC7D5;">;</span></div><div class="line"><span style="color: #BFC7D5;">    </span><span style="color: #C792EA;">final</span><span style="color: #BFC7D5;"> http.</span><span style="color: #FFCB6B;">Response</span><span style="color: #BFC7D5;"> response </span><span style="color: #C792EA;">=</span><span style="color: #BFC7D5;"> </span><span style="color: #C792EA;">await</span><span style="color: #BFC7D5;"> http.</span><span style="color: #82AAFF;">put</span><span style="color: #BFC7D5;">(</span></div><div class="line"><span style="color: #BFC7D5;">      </span><span style="color: #FFCB6B;">Uri</span><span style="color: #BFC7D5;">.</span><span style="color: #82AAFF;">parse</span><span style="color: #BFC7D5;">(url),</span></div><div class="line"><span style="color: #BFC7D5;">      headers</span><span style="color: #89DDFF;">:</span><span style="color: #BFC7D5;"> </span><span style="color: #C792EA;">&lt;</span><span style="color: #FFCB6B;">String</span><span style="color: #BFC7D5;">, </span><span style="color: #FFCB6B;">String</span><span style="color: #C792EA;">&gt;</span><span style="color: #BFC7D5;">{</span></div><div class="line"><span style="color: #BFC7D5;">        </span><span style="color: #C3E88D;">'Content-Type'</span><span style="color: #89DDFF;">:</span><span style="color: #BFC7D5;"> </span><span style="color: #C3E88D;">'application/json; charset=UTF-8'</span><span style="color: #BFC7D5;">,</span></div><div class="line"><span style="color: #BFC7D5;">      },</span></div><div class="line"><span style="color: #BFC7D5;">      body</span><span style="color: #89DDFF;">:</span><span style="color: #BFC7D5;"> </span><span style="color: #82AAFF;">jsonEncode</span><span style="color: #BFC7D5;">(</span><span style="color: #C792EA;">&lt;</span><span style="color: #FFCB6B;">String</span><span style="color: #BFC7D5;">, </span><span style="color: #FFCB6B;">String</span><span style="color: #C792EA;">&gt;</span><span style="color: #BFC7D5;">{</span></div><div class="line"><span style="color: #BFC7D5;">        </span><span style="color: #C3E88D;">'name'</span><span style="color: #89DDFF;">:</span><span style="color: #BFC7D5;"> name,</span></div><div class="line"><span style="color: #BFC7D5;">      }),</span></div><div class="line"><span style="color: #BFC7D5;">    );</span></div><div class="line">&nbsp;</div><div class="line"><span style="color: #BFC7D5;">    </span><span style="color: #C792EA;">if</span><span style="color: #BFC7D5;"> (response.statusCode </span><span style="color: #C792EA;">!=</span><span style="color: #BFC7D5;"> </span><span style="color: #F78C6C;">200</span><span style="color: #BFC7D5;">) {</span></div><div class="line"><span style="color: #BFC7D5;">      </span><span style="color: #C792EA;">throw</span><span style="color: #BFC7D5;"> </span><span style="color: #FFCB6B;">Exception</span><span style="color: #BFC7D5;">(</span><span style="color: #C3E88D;">'Failed to update category'</span><span style="color: #BFC7D5;">);</span></div><div class="line"><span style="color: #BFC7D5;">    }</span></div><div class="line"><span style="color: #BFC7D5;">  }</span></div><div class="line">&nbsp;</div><div class="line"><span style="color: #697098;">// ...</span></div></code></pre><button id="clipButton-3" class="md:block hidden copyBtn" aria-label="Kopieer naar klembord" title="Kopieer naar klembord" data-clipboard-target="#clipText-3"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="fill-current text-white w-6 h-6"><path fill-rule="evenodd" d="M10.5 3A1.501 1.501 0 009 4.5h6A1.5 1.5 0 0013.5 3h-3zm-2.693.178A3 3 0 0110.5 1.5h3a3 3 0 012.694 1.678c.497.042.992.092 1.486.15 1.497.173 2.57 1.46 2.57 2.929V19.5a3 3 0 01-3 3H6.75a3 3 0 01-3-3V6.257c0-1.47 1.073-2.756 2.57-2.93.493-.057.989-.107 1.487-.15z" clip-rule="evenodd"></path></svg></button></div>
+<p>And finally, we can import the <code>ApiService</code> class into <code>categories_list.dart</code> and use it to make the API calls:</p>
+<p><strong>lib/screens/categories_list.dart</strong></p>
+<div class="relative code-block-wrapper"><pre><code data-theme="olaolu-palenight" data-lang="dart" class="torchlight has-add-lines has-remove-lines has-diff-lines" style="background-color: #292D3E; --theme-selection-background: #7580B850;" id="clipText-4"><!-- Syntax highlighted by torchlight.dev --><div class="line"><span style="color: #C792EA;">import</span><span style="color: #BFC7D5;"> </span><span style="color: #C3E88D;">'package:flutter/material.dart'</span><span style="color: #BFC7D5;">;</span></div><div class="line line-remove line-has-background" style="background-color: #ef535033"><span style="color: #f07178;">import</span><span style="color: #f07178;"> </span><span style="color: #f07178;">'package:http/http.dart'</span><span style="color: #f07178;"> </span><span style="color: #f07178;">as</span><span style="color: #f07178;"> http;</span></div><div class="line line-remove line-has-background" style="background-color: #ef535033"><span style="color: #f07178;">import</span><span style="color: #f07178;"> </span><span style="color: #f07178;">'dart:convert'</span><span style="color: #f07178;">;</span></div><div class="line"><span style="color: #C792EA;">import</span><span style="color: #BFC7D5;"> </span><span style="color: #C3E88D;">'package:laravel_api_flutter_app/models/category.dart'</span><span style="color: #BFC7D5;">;</span></div><div class="line">&nbsp;</div><div class="line"><span style="color: #C792EA;">class</span><span style="color: #BFC7D5;"> </span><span style="color: #FFCB6B;">CategoriesList</span><span style="color: #BFC7D5;"> </span><span style="color: #C792EA;">extends</span><span style="color: #BFC7D5;"> </span><span style="color: #FFCB6B;">StatefulWidget</span><span style="color: #BFC7D5;"> {</span></div><div class="line"><span style="color: #BFC7D5;">  </span><span style="color: #C792EA;">const</span><span style="color: #BFC7D5;"> </span><span style="color: #FFCB6B;">CategoriesList</span><span style="color: #BFC7D5;">({</span><span style="color: #FF5572;">super</span><span style="color: #BFC7D5;">.key});</span></div><div class="line">&nbsp;</div><div class="line"><span style="color: #BFC7D5;">  </span><span style="color: #C792EA;">@override</span></div><div class="line"><span style="color: #BFC7D5;">  </span><span style="color: #FFCB6B;">CategoriesListState</span><span style="color: #BFC7D5;"> </span><span style="color: #82AAFF;">createState</span><span style="color: #BFC7D5;">() </span><span style="color: #89DDFF;">=&gt;</span><span style="color: #BFC7D5;"> </span><span style="color: #FFCB6B;">CategoriesListState</span><span style="color: #BFC7D5;">();</span></div><div class="line"><span style="color: #BFC7D5;">}</span></div><div class="line">&nbsp;</div><div class="line"><span style="color: #C792EA;">class</span><span style="color: #BFC7D5;"> </span><span style="color: #FFCB6B;">CategoriesListState</span><span style="color: #BFC7D5;"> </span><span style="color: #C792EA;">extends</span><span style="color: #BFC7D5;"> </span><span style="color: #FFCB6B;">State</span><span style="color: #C792EA;">&lt;</span><span style="color: #FFCB6B;">CategoriesList</span><span style="color: #C792EA;">&gt;</span><span style="color: #BFC7D5;"> {</span></div><div class="line"><span style="color: #BFC7D5;">  </span><span style="color: #FFCB6B;">Future</span><span style="color: #C792EA;">&lt;</span><span style="color: #FFCB6B;">List</span><span style="color: #C792EA;">&lt;</span><span style="color: #FFCB6B;">Category</span><span style="color: #89DDFF;">&gt;&gt;?</span><span style="color: #BFC7D5;"> futureCategories;</span></div><div class="line line-add line-has-background" style="background-color: #99b76d23"><span style="color: #C3E88D;">  </span><span style="color: #C3E88D;">ApiService</span><span style="color: #C3E88D;"> apiService </span><span style="color: #C3E88D;">=</span><span style="color: #C3E88D;"> </span><span style="color: #C3E88D;">ApiService</span><span style="color: #C3E88D;">();</span></div><div class="line"><span style="color: #BFC7D5;">  </span><span style="color: #C792EA;">final</span><span style="color: #BFC7D5;"> _formKey </span><span style="color: #C792EA;">=</span><span style="color: #BFC7D5;"> </span><span style="color: #FFCB6B;">GlobalKey</span><span style="color: #C792EA;">&lt;</span><span style="color: #FFCB6B;">FormState</span><span style="color: #C792EA;">&gt;</span><span style="color: #BFC7D5;">();</span></div><div class="line"><span style="color: #BFC7D5;">  </span><span style="color: #C792EA;">late</span><span style="color: #BFC7D5;"> </span><span style="color: #FFCB6B;">Category</span><span style="color: #BFC7D5;"> selectedCategory;</span></div><div class="line"><span style="color: #BFC7D5;">  </span><span style="color: #C792EA;">final</span><span style="color: #BFC7D5;"> categoryNameController </span><span style="color: #C792EA;">=</span><span style="color: #BFC7D5;"> </span><span style="color: #FFCB6B;">TextEditingController</span><span style="color: #BFC7D5;">();</span></div><div class="line">&nbsp;</div><div class="line line-remove line-has-background" style="background-color: #ef535033"><span style="color: #f07178;">  </span><span style="color: #f07178;">Future</span><span style="color: #f07178;">&lt;</span><span style="color: #f07178;">List</span><span style="color: #f07178;">&lt;</span><span style="color: #f07178;">Category</span><span style="color: #f07178;">&gt;&gt;</span><span style="color: #f07178;"> </span><span style="color: #f07178;">fetchCategories</span><span style="color: #f07178;">() </span><span style="color: #f07178;">async</span><span style="color: #f07178;"> {</span></div><div class="line line-remove line-has-background" style="background-color: #ef535033"><span style="color: #f07178;">    </span><span style="color: #f07178;">final</span><span style="color: #f07178;"> http.</span><span style="color: #f07178;">Response</span><span style="color: #f07178;"> response </span><span style="color: #f07178;">=</span><span style="color: #f07178;"> </span><span style="color: #f07178;">await</span><span style="color: #f07178;"> http.</span><span style="color: #f07178;">get</span><span style="color: #f07178;">(</span></div><div class="line line-remove line-has-background" style="background-color: #ef535033"><span style="color: #f07178;">        </span><span style="color: #f07178;">Uri</span><span style="color: #f07178;">.</span><span style="color: #f07178;">parse</span><span style="color: #f07178;">(</span><span style="color: #f07178;">'https://ec90-78-58-236-130.ngrok-free.app/api/categories'</span><span style="color: #f07178;">));</span></div><div class="line line-remove line-has-background" style="background-color: #ef535033">&nbsp;</div><div class="line line-remove line-has-background" style="background-color: #ef535033"><span style="color: #f07178;">    </span><span style="color: #f07178;">final</span><span style="color: #f07178;"> </span><span style="color: #f07178;">Map</span><span style="color: #f07178;">&lt;</span><span style="color: #f07178;">String</span><span style="color: #f07178;">, </span><span style="color: #f07178;">dynamic</span><span style="color: #f07178;">&gt;</span><span style="color: #f07178;"> data </span><span style="color: #f07178;">=</span><span style="color: #f07178;"> json.</span><span style="color: #f07178;">decode</span><span style="color: #f07178;">(response.body);</span></div><div class="line line-remove line-has-background" style="background-color: #ef535033">&nbsp;</div><div class="line line-remove line-has-background" style="background-color: #ef535033"><span style="color: #f07178;">    </span><span style="color: #f07178;">if</span><span style="color: #f07178;"> (</span><span style="color: #f07178;">!</span><span style="color: #f07178;">data.</span><span style="color: #f07178;">containsKey</span><span style="color: #f07178;">(</span><span style="color: #f07178;">'data'</span><span style="color: #f07178;">) </span><span style="color: #f07178;">||</span><span style="color: #f07178;"> data[</span><span style="color: #f07178;">'data'</span><span style="color: #f07178;">] </span><span style="color: #f07178;">is</span><span style="color: #f07178;">!</span><span style="color: #f07178;"> </span><span style="color: #f07178;">List</span><span style="color: #f07178;">) {</span></div><div class="line line-remove line-has-background" style="background-color: #ef535033"><span style="color: #f07178;">      </span><span style="color: #f07178;">throw</span><span style="color: #f07178;"> </span><span style="color: #f07178;">Exception</span><span style="color: #f07178;">(</span><span style="color: #f07178;">'Failed to load categories'</span><span style="color: #f07178;">);</span></div><div class="line line-remove line-has-background" style="background-color: #ef535033"><span style="color: #f07178;">    }</span></div><div class="line line-remove line-has-background" style="background-color: #ef535033">&nbsp;</div><div class="line line-remove line-has-background" style="background-color: #ef535033"><span style="color: #f07178;">    </span><span style="color: #f07178;">List</span><span style="color: #f07178;"> categories </span><span style="color: #f07178;">=</span><span style="color: #f07178;"> data[</span><span style="color: #f07178;">'data'</span><span style="color: #f07178;">];</span></div><div class="line line-remove line-has-background" style="background-color: #ef535033">&nbsp;</div><div class="line line-remove line-has-background" style="background-color: #ef535033"><span style="color: #f07178;">    </span><span style="color: #f07178;">return</span><span style="color: #f07178;"> categories.</span><span style="color: #f07178;">map</span><span style="color: #f07178;">((category) </span><span style="color: #f07178;">=&gt;</span><span style="color: #f07178;"> </span><span style="color: #f07178;">Category</span><span style="color: #f07178;">.</span><span style="color: #f07178;">fromJson</span><span style="color: #f07178;">(category)).</span><span style="color: #f07178;">toList</span><span style="color: #f07178;">();</span></div><div class="line line-remove line-has-background" style="background-color: #ef535033"><span style="color: #f07178;">  }</span></div><div class="line line-remove line-has-background" style="background-color: #ef535033">&nbsp;</div><div class="line line-remove line-has-background" style="background-color: #ef535033"><span style="color: #f07178;">  </span><span style="color: #f07178;">Future</span><span style="color: #f07178;"> </span><span style="color: #f07178;">saveCategory</span><span style="color: #f07178;">() </span><span style="color: #f07178;">async</span><span style="color: #f07178;"> {</span></div><div class="line line-remove line-has-background" style="background-color: #ef535033"><span style="color: #f07178;">    </span><span style="color: #f07178;">final</span><span style="color: #f07178;"> form </span><span style="color: #f07178;">=</span><span style="color: #f07178;"> _formKey.currentState;</span></div><div class="line line-remove line-has-background" style="background-color: #ef535033">&nbsp;</div><div class="line line-remove line-has-background" style="background-color: #ef535033"><span style="color: #f07178;">    </span><span style="color: #f07178;">if</span><span style="color: #f07178;"> (</span><span style="color: #f07178;">!</span><span style="color: #f07178;">form</span><span style="color: #f07178;">!</span><span style="color: #f07178;">.</span><span style="color: #f07178;">validate</span><span style="color: #f07178;">()) {</span></div><div class="line line-remove line-has-background" style="background-color: #ef535033"><span style="color: #f07178;">      </span><span style="color: #f07178;">return</span><span style="color: #f07178;">;</span></div><div class="line line-remove line-has-background" style="background-color: #ef535033"><span style="color: #f07178;">    }</span></div><div class="line line-remove line-has-background" style="background-color: #ef535033">&nbsp;</div><div class="line line-remove line-has-background" style="background-color: #ef535033"><span style="color: #f07178;">    </span><span style="color: #f07178;">String</span><span style="color: #f07178;"> url </span><span style="color: #f07178;">=</span></div><div class="line line-remove line-has-background" style="background-color: #ef535033"><span style="color: #f07178;">        </span><span style="color: #f07178;">'https://ec90-78-58-236-130.ngrok-free.app/api/categories/${</span><span style="color: #f07178;">selectedCategory</span><span style="color: #f07178;">.</span><span style="color: #f07178;">id</span><span style="color: #f07178;">}'</span><span style="color: #f07178;">;</span></div><div class="line line-remove line-has-background" style="background-color: #ef535033"><span style="color: #f07178;">    </span><span style="color: #f07178;">final</span><span style="color: #f07178;"> http.</span><span style="color: #f07178;">Response</span><span style="color: #f07178;"> response </span><span style="color: #f07178;">=</span><span style="color: #f07178;"> </span><span style="color: #f07178;">await</span><span style="color: #f07178;"> http.</span><span style="color: #f07178;">put</span><span style="color: #f07178;">(</span></div><div class="line line-remove line-has-background" style="background-color: #ef535033"><span style="color: #f07178;">      </span><span style="color: #f07178;">Uri</span><span style="color: #f07178;">.</span><span style="color: #f07178;">parse</span><span style="color: #f07178;">(url),</span></div><div class="line line-remove line-has-background" style="background-color: #ef535033"><span style="color: #f07178;">      headers</span><span style="color: #f07178;">:</span><span style="color: #f07178;"> </span><span style="color: #f07178;">&lt;</span><span style="color: #f07178;">String</span><span style="color: #f07178;">, </span><span style="color: #f07178;">String</span><span style="color: #f07178;">&gt;</span><span style="color: #f07178;">{</span></div><div class="line line-remove line-has-background" style="background-color: #ef535033"><span style="color: #f07178;">        </span><span style="color: #f07178;">'Content-Type'</span><span style="color: #f07178;">:</span><span style="color: #f07178;"> </span><span style="color: #f07178;">'application/json; charset=UTF-8'</span><span style="color: #f07178;">,</span></div><div class="line line-remove line-has-background" style="background-color: #ef535033"><span style="color: #f07178;">      },</span></div><div class="line line-remove line-has-background" style="background-color: #ef535033"><span style="color: #f07178;">      body</span><span style="color: #f07178;">:</span><span style="color: #f07178;"> </span><span style="color: #f07178;">jsonEncode</span><span style="color: #f07178;">(</span><span style="color: #f07178;">&lt;</span><span style="color: #f07178;">String</span><span style="color: #f07178;">, </span><span style="color: #f07178;">String</span><span style="color: #f07178;">&gt;</span><span style="color: #f07178;">{</span></div><div class="line line-remove line-has-background" style="background-color: #ef535033"><span style="color: #f07178;">        </span><span style="color: #f07178;">'name'</span><span style="color: #f07178;">:</span><span style="color: #f07178;"> categoryNameController.text,</span></div><div class="line line-remove line-has-background" style="background-color: #ef535033"><span style="color: #f07178;">      }),</span></div><div class="line line-remove line-has-background" style="background-color: #ef535033"><span style="color: #f07178;">    );</span></div><div class="line line-remove line-has-background" style="background-color: #ef535033">&nbsp;</div><div class="line line-remove line-has-background" style="background-color: #ef535033"><span style="color: #f07178;">    </span><span style="color: #f07178;">Navigator</span><span style="color: #f07178;">.</span><span style="color: #f07178;">pop</span><span style="color: #f07178;">(context);</span></div><div class="line line-remove line-has-background" style="background-color: #ef535033"><span style="color: #f07178;">  }</span></div><div class="line">&nbsp;</div><div class="line"><span style="color: #BFC7D5;">  </span><span style="color: #C792EA;">@override</span></div><div class="line"><span style="color: #BFC7D5;">  </span><span style="color: #C792EA;">void</span><span style="color: #BFC7D5;"> </span><span style="color: #82AAFF;">initState</span><span style="color: #BFC7D5;">() {</span></div><div class="line"><span style="color: #BFC7D5;">    </span><span style="color: #FF5572;">super</span><span style="color: #BFC7D5;">.</span><span style="color: #82AAFF;">initState</span><span style="color: #BFC7D5;">();</span></div><div class="line line-remove line-has-background" style="background-color: #ef535033"><span style="color: #f07178;">    futureCategories </span><span style="color: #f07178;">=</span><span style="color: #f07178;"> </span><span style="color: #f07178;">fetchCategories</span><span style="color: #f07178;">();</span></div><div class="line line-add line-has-background" style="background-color: #99b76d23"><span style="color: #C3E88D;">    futureCategories </span><span style="color: #C3E88D;">=</span><span style="color: #C3E88D;"> apiService.</span><span style="color: #C3E88D;">fetchCategories</span><span style="color: #C3E88D;">();</span></div><div class="line"><span style="color: #BFC7D5;">  }</span></div><div class="line">&nbsp;</div><div class="line"><span style="color: #BFC7D5;">  </span><span style="color: #C792EA;">@override</span></div><div class="line"><span style="color: #BFC7D5;">  </span><span style="color: #FFCB6B;">Widget</span><span style="color: #BFC7D5;"> </span><span style="color: #82AAFF;">build</span><span style="color: #BFC7D5;">(</span><span style="color: #FFCB6B;">BuildContext</span><span style="color: #BFC7D5;"> context) {</span></div><div class="line"><span style="color: #BFC7D5;">    </span><span style="color: #C792EA;">return</span><span style="color: #BFC7D5;"> </span><span style="color: #FFCB6B;">Scaffold</span><span style="color: #BFC7D5;">(</span></div><div class="line"><span style="color: #BFC7D5;">      appBar</span><span style="color: #89DDFF;">:</span><span style="color: #BFC7D5;"> </span><span style="color: #FFCB6B;">AppBar</span><span style="color: #BFC7D5;">(</span></div><div class="line"><span style="color: #BFC7D5;">        title</span><span style="color: #89DDFF;">:</span><span style="color: #BFC7D5;"> </span><span style="color: #FFCB6B;">Text</span><span style="color: #BFC7D5;">(</span><span style="color: #C3E88D;">'Categories List'</span><span style="color: #BFC7D5;">),</span></div><div class="line"><span style="color: #BFC7D5;">      ),</span></div><div class="line"><span style="color: #BFC7D5;">      body</span><span style="color: #89DDFF;">:</span><span style="color: #BFC7D5;"> </span><span style="color: #FFCB6B;">FutureBuilder</span><span style="color: #C792EA;">&lt;</span><span style="color: #FFCB6B;">List</span><span style="color: #C792EA;">&lt;</span><span style="color: #FFCB6B;">Category</span><span style="color: #89DDFF;">&gt;&gt;</span><span style="color: #BFC7D5;">(</span></div><div class="line"><span style="color: #BFC7D5;">          future</span><span style="color: #89DDFF;">:</span><span style="color: #BFC7D5;"> futureCategories,</span></div><div class="line"><span style="color: #BFC7D5;">          builder</span><span style="color: #89DDFF;">:</span><span style="color: #BFC7D5;"> (context, snapshot) {</span></div><div class="line"><span style="color: #BFC7D5;">            </span><span style="color: #C792EA;">if</span><span style="color: #BFC7D5;"> (snapshot.hasData) {</span></div><div class="line"><span style="color: #BFC7D5;">              </span><span style="color: #C792EA;">return</span><span style="color: #BFC7D5;"> </span><span style="color: #FFCB6B;">ListView</span><span style="color: #BFC7D5;">.</span><span style="color: #82AAFF;">builder</span><span style="color: #BFC7D5;">(</span></div><div class="line"><span style="color: #BFC7D5;">                  itemCount</span><span style="color: #89DDFF;">:</span><span style="color: #BFC7D5;"> snapshot.data</span><span style="color: #C792EA;">!</span><span style="color: #BFC7D5;">.length,</span></div><div class="line"><span style="color: #BFC7D5;">                  itemBuilder</span><span style="color: #89DDFF;">:</span><span style="color: #BFC7D5;"> (context, index) {</span></div><div class="line"><span style="color: #BFC7D5;">                    </span><span style="color: #FFCB6B;">Category</span><span style="color: #BFC7D5;"> category </span><span style="color: #C792EA;">=</span><span style="color: #BFC7D5;"> snapshot.data</span><span style="color: #C792EA;">!</span><span style="color: #BFC7D5;">[index];</span></div><div class="line"><span style="color: #BFC7D5;">                    </span><span style="color: #C792EA;">return</span><span style="color: #BFC7D5;"> </span><span style="color: #FFCB6B;">ListTile</span><span style="color: #BFC7D5;">(</span></div><div class="line"><span style="color: #BFC7D5;">                      title</span><span style="color: #89DDFF;">:</span><span style="color: #BFC7D5;"> </span><span style="color: #FFCB6B;">Text</span><span style="color: #BFC7D5;">(category.name),</span></div><div class="line"><span style="color: #BFC7D5;">                      trailing</span><span style="color: #89DDFF;">:</span><span style="color: #BFC7D5;"> </span><span style="color: #FFCB6B;">IconButton</span><span style="color: #BFC7D5;">(</span></div><div class="line"><span style="color: #BFC7D5;">                          onPressed</span><span style="color: #89DDFF;">:</span><span style="color: #BFC7D5;"> () {</span></div><div class="line"><span style="color: #BFC7D5;">                            selectedCategory </span><span style="color: #C792EA;">=</span><span style="color: #BFC7D5;"> category;</span></div><div class="line"><span style="color: #BFC7D5;">                            categoryNameController.text </span><span style="color: #C792EA;">=</span><span style="color: #BFC7D5;"> category.name;</span></div><div class="line"><span style="color: #BFC7D5;">                            </span><span style="color: #82AAFF;">showModalBottomSheet</span><span style="color: #BFC7D5;">(</span></div><div class="line"><span style="color: #BFC7D5;">                                context</span><span style="color: #89DDFF;">:</span><span style="color: #BFC7D5;"> context,</span></div><div class="line"><span style="color: #BFC7D5;">                                builder</span><span style="color: #89DDFF;">:</span><span style="color: #BFC7D5;"> (</span><span style="color: #FFCB6B;">BuildContext</span><span style="color: #BFC7D5;"> context) {</span></div><div class="line"><span style="color: #BFC7D5;">                                  </span><span style="color: #C792EA;">return</span><span style="color: #BFC7D5;"> </span><span style="color: #FFCB6B;">Container</span><span style="color: #BFC7D5;">(</span></div><div class="line"><span style="color: #BFC7D5;">                                    padding</span><span style="color: #89DDFF;">:</span><span style="color: #BFC7D5;"> </span><span style="color: #FFCB6B;">EdgeInsets</span><span style="color: #BFC7D5;">.</span><span style="color: #82AAFF;">all</span><span style="color: #BFC7D5;">(</span><span style="color: #F78C6C;">20</span><span style="color: #BFC7D5;">),</span></div><div class="line"><span style="color: #BFC7D5;">                                    child</span><span style="color: #89DDFF;">:</span><span style="color: #BFC7D5;"> </span><span style="color: #FFCB6B;">Form</span><span style="color: #BFC7D5;">(</span></div><div class="line"><span style="color: #BFC7D5;">                                      key</span><span style="color: #89DDFF;">:</span><span style="color: #BFC7D5;"> _formKey,</span></div><div class="line"><span style="color: #BFC7D5;">                                      child</span><span style="color: #89DDFF;">:</span><span style="color: #BFC7D5;"> </span><span style="color: #FFCB6B;">Column</span><span style="color: #BFC7D5;">(</span></div><div class="line"><span style="color: #BFC7D5;">                                        children</span><span style="color: #89DDFF;">:</span><span style="color: #BFC7D5;"> [</span></div><div class="line"><span style="color: #BFC7D5;">                                          </span><span style="color: #FFCB6B;">Text</span><span style="color: #BFC7D5;">(</span><span style="color: #C3E88D;">'Edit Category'</span><span style="color: #BFC7D5;">),</span></div><div class="line"><span style="color: #BFC7D5;">                                          </span><span style="color: #FFCB6B;">TextFormField</span><span style="color: #BFC7D5;">(</span></div><div class="line"><span style="color: #BFC7D5;">                                            decoration</span><span style="color: #89DDFF;">:</span><span style="color: #BFC7D5;"> </span><span style="color: #FFCB6B;">InputDecoration</span><span style="color: #BFC7D5;">(</span></div><div class="line"><span style="color: #BFC7D5;">                                              labelText</span><span style="color: #89DDFF;">:</span><span style="color: #BFC7D5;"> </span><span style="color: #C3E88D;">'Category Name'</span><span style="color: #BFC7D5;">,</span></div><div class="line"><span style="color: #BFC7D5;">                                            ),</span></div><div class="line"><span style="color: #BFC7D5;">                                            controller</span><span style="color: #89DDFF;">:</span><span style="color: #BFC7D5;"> categoryNameController,</span></div><div class="line"><span style="color: #BFC7D5;">                                            validator</span><span style="color: #89DDFF;">:</span><span style="color: #BFC7D5;"> (</span><span style="color: #FFCB6B;">String</span><span style="color: #89DDFF;">?</span><span style="color: #BFC7D5;"> value) {</span></div><div class="line"><span style="color: #BFC7D5;">                                              </span><span style="color: #C792EA;">if</span><span style="color: #BFC7D5;"> (value </span><span style="color: #C792EA;">==</span><span style="color: #BFC7D5;"> </span><span style="color: #82AAFF;">null</span><span style="color: #BFC7D5;"> </span><span style="color: #89DDFF;">||</span></div><div class="line"><span style="color: #BFC7D5;">                                                  value.isEmpty) {</span></div><div class="line"><span style="color: #BFC7D5;">                                                </span><span style="color: #C792EA;">return</span><span style="color: #BFC7D5;"> </span><span style="color: #C3E88D;">'Please enter category name'</span><span style="color: #BFC7D5;">;</span></div><div class="line"><span style="color: #BFC7D5;">                                              }</span></div><div class="line"><span style="color: #BFC7D5;">                                              </span><span style="color: #C792EA;">return</span><span style="color: #BFC7D5;"> </span><span style="color: #82AAFF;">null</span><span style="color: #BFC7D5;">;</span></div><div class="line"><span style="color: #BFC7D5;">                                            },</span></div><div class="line"><span style="color: #BFC7D5;">                                          ),</span></div><div class="line"><span style="color: #BFC7D5;">                                          </span><span style="color: #FFCB6B;">Padding</span><span style="color: #BFC7D5;">(</span></div><div class="line"><span style="color: #BFC7D5;">                                            padding</span><span style="color: #89DDFF;">:</span><span style="color: #BFC7D5;"> </span><span style="color: #FFCB6B;">EdgeInsets</span><span style="color: #BFC7D5;">.</span><span style="color: #82AAFF;">only</span><span style="color: #BFC7D5;">(top</span><span style="color: #89DDFF;">:</span><span style="color: #BFC7D5;"> </span><span style="color: #F78C6C;">20</span><span style="color: #BFC7D5;">),</span></div><div class="line"><span style="color: #BFC7D5;">                                            child</span><span style="color: #89DDFF;">:</span><span style="color: #BFC7D5;"> </span><span style="color: #FFCB6B;">ElevatedButton</span><span style="color: #BFC7D5;">(</span></div><div class="line"><span style="color: #BFC7D5;">                                              onPressed</span><span style="color: #89DDFF;">:</span><span style="color: #BFC7D5;"> () {</span></div><div class="line line-remove line-has-background" style="background-color: #ef535033"><span style="color: #f07178;">                                                </span><span style="color: #f07178;">saveCategory</span><span style="color: #f07178;">();</span></div><div class="line line-add line-has-background" style="background-color: #99b76d23"><span style="color: #C3E88D;">                                                apiService.</span><span style="color: #C3E88D;">saveCategory</span><span style="color: #C3E88D;">(selectedCategory.id, categoryNameController.text);</span></div><div class="line"><span style="color: #BFC7D5;">                                              },</span></div><div class="line"><span style="color: #BFC7D5;">                                              child</span><span style="color: #89DDFF;">:</span><span style="color: #BFC7D5;"> </span><span style="color: #FFCB6B;">Text</span><span style="color: #BFC7D5;">(</span><span style="color: #C3E88D;">'Update'</span><span style="color: #BFC7D5;">),</span></div><div class="line"><span style="color: #BFC7D5;">                                            ),</span></div><div class="line"><span style="color: #BFC7D5;">                                          ),</span></div><div class="line"><span style="color: #BFC7D5;">                                        ],</span></div><div class="line"><span style="color: #BFC7D5;">                                      ),</span></div><div class="line"><span style="color: #BFC7D5;">                                    ),</span></div><div class="line"><span style="color: #BFC7D5;">                                  );</span></div><div class="line"><span style="color: #BFC7D5;">                                });</span></div><div class="line"><span style="color: #BFC7D5;">                          },</span></div><div class="line"><span style="color: #BFC7D5;">                          icon</span><span style="color: #89DDFF;">:</span><span style="color: #BFC7D5;"> </span><span style="color: #FFCB6B;">Icon</span><span style="color: #BFC7D5;">(</span><span style="color: #FFCB6B;">Icons</span><span style="color: #BFC7D5;">.edit)),</span></div><div class="line"><span style="color: #BFC7D5;">                    );</span></div><div class="line"><span style="color: #BFC7D5;">                  });</span></div><div class="line"><span style="color: #BFC7D5;">            } </span><span style="color: #C792EA;">else</span><span style="color: #BFC7D5;"> </span><span style="color: #C792EA;">if</span><span style="color: #BFC7D5;"> (snapshot.hasError) {</span></div><div class="line"><span style="color: #BFC7D5;">              </span><span style="color: #C792EA;">return</span><span style="color: #BFC7D5;"> </span><span style="color: #FFCB6B;">Text</span><span style="color: #BFC7D5;">(</span><span style="color: #C3E88D;">'${</span><span style="color: #7986E7;">snapshot</span><span style="color: #C3E88D;">.</span><span style="color: #7986E7;">error</span><span style="color: #C3E88D;">}'</span><span style="color: #BFC7D5;">);</span></div><div class="line"><span style="color: #BFC7D5;">            }</span></div><div class="line"><span style="color: #BFC7D5;">            </span><span style="color: #C792EA;">return</span><span style="color: #BFC7D5;"> </span><span style="color: #FFCB6B;">CircularProgressIndicator</span><span style="color: #BFC7D5;">();</span></div><div class="line"><span style="color: #BFC7D5;">          }),</span></div><div class="line"><span style="color: #BFC7D5;">    );</span></div><div class="line"><span style="color: #BFC7D5;">  }</span></div><div class="line"><span style="color: #BFC7D5;">}</span></div></code></pre><button id="clipButton-4" class="md:block hidden copyBtn" aria-label="Kopieer naar klembord" title="Kopieer naar klembord" data-clipboard-target="#clipText-4"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="fill-current text-white w-6 h-6"><path fill-rule="evenodd" d="M10.5 3A1.501 1.501 0 009 4.5h6A1.5 1.5 0 0013.5 3h-3zm-2.693.178A3 3 0 0110.5 1.5h3a3 3 0 012.694 1.678c.497.042.992.092 1.486.15 1.497.173 2.57 1.46 2.57 2.929V19.5a3 3 0 01-3 3H6.75a3 3 0 01-3-3V6.257c0-1.47 1.073-2.756 2.57-2.93.493-.057.989-.107 1.487-.15z" clip-rule="evenodd"></path></svg></button></div>
+<p>While this seems like a lot of changes, it will save us a lot of time and effort in future lessons, especially when we start adding more API calls to our application.</p>
+<hr>
+<h2>Moving Category Edit Button</h2>
+<p>The last thing to move is our Edit Category Button. This is a bit special, because it will show us how to move parts of our UI into separate files. Create a new file:</p>
+<p><strong>lib/widgets/category_edit.dart</strong></p>
+<div class="relative code-block-wrapper"><pre><code data-theme="olaolu-palenight" data-lang="dart" class="torchlight" style="background-color: #292D3E; --theme-selection-background: #7580B850;" id="clipText-5"><!-- Syntax highlighted by torchlight.dev --><div class="line"><span style="color: #C792EA;">import</span><span style="color: #BFC7D5;"> </span><span style="color: #C3E88D;">'package:flutter/material.dart'</span><span style="color: #BFC7D5;">;</span></div><div class="line"><span style="color: #C792EA;">import</span><span style="color: #BFC7D5;"> </span><span style="color: #C3E88D;">'package:laravel_api_flutter_app/services/api.dart'</span><span style="color: #BFC7D5;">;</span></div><div class="line"><span style="color: #C792EA;">import</span><span style="color: #BFC7D5;"> </span><span style="color: #C3E88D;">'package:laravel_api_flutter_app/models/category.dart'</span><span style="color: #BFC7D5;">;</span></div><div class="line">&nbsp;</div><div class="line"><span style="color: #C792EA;">class</span><span style="color: #BFC7D5;"> </span><span style="color: #FFCB6B;">CategoryEdit</span><span style="color: #BFC7D5;"> </span><span style="color: #C792EA;">extends</span><span style="color: #BFC7D5;"> </span><span style="color: #FFCB6B;">StatefulWidget</span><span style="color: #BFC7D5;"> {</span></div><div class="line"><span style="color: #BFC7D5;">  </span><span style="color: #C792EA;">final</span><span style="color: #BFC7D5;"> </span><span style="color: #FFCB6B;">Category</span><span style="color: #BFC7D5;"> category;</span></div><div class="line">&nbsp;</div><div class="line"><span style="color: #BFC7D5;">  </span><span style="color: #C792EA;">const</span><span style="color: #BFC7D5;"> </span><span style="color: #FFCB6B;">CategoryEdit</span><span style="color: #BFC7D5;">(</span><span style="color: #FF5572;">this</span><span style="color: #BFC7D5;">.category, {</span><span style="color: #FF5572;">super</span><span style="color: #BFC7D5;">.key});</span></div><div class="line">&nbsp;</div><div class="line"><span style="color: #BFC7D5;">  </span><span style="color: #C792EA;">@override</span></div><div class="line"><span style="color: #BFC7D5;">  </span><span style="color: #FFCB6B;">CategoryEditState</span><span style="color: #BFC7D5;"> </span><span style="color: #82AAFF;">createState</span><span style="color: #BFC7D5;">() </span><span style="color: #89DDFF;">=&gt;</span><span style="color: #BFC7D5;"> </span><span style="color: #FFCB6B;">CategoryEditState</span><span style="color: #BFC7D5;">();</span></div><div class="line"><span style="color: #BFC7D5;">}</span></div><div class="line">&nbsp;</div><div class="line"><span style="color: #C792EA;">class</span><span style="color: #BFC7D5;"> </span><span style="color: #FFCB6B;">CategoryEditState</span><span style="color: #BFC7D5;"> </span><span style="color: #C792EA;">extends</span><span style="color: #BFC7D5;"> </span><span style="color: #FFCB6B;">State</span><span style="color: #C792EA;">&lt;</span><span style="color: #FFCB6B;">CategoryEdit</span><span style="color: #C792EA;">&gt;</span><span style="color: #BFC7D5;"> {</span></div><div class="line"><span style="color: #BFC7D5;">  </span><span style="color: #C792EA;">@override</span></div><div class="line"><span style="color: #BFC7D5;">  </span><span style="color: #FFCB6B;">Widget</span><span style="color: #BFC7D5;"> </span><span style="color: #82AAFF;">build</span><span style="color: #BFC7D5;">(</span><span style="color: #FFCB6B;">BuildContext</span><span style="color: #BFC7D5;"> context) {</span></div><div class="line"><span style="color: #BFC7D5;">    </span><span style="color: #C792EA;">return</span><span style="color: #BFC7D5;"> </span><span style="color: #FFCB6B;">Container</span><span style="color: #BFC7D5;">();</span></div><div class="line"><span style="color: #BFC7D5;">  }</span></div><div class="line"><span style="color: #BFC7D5;">}</span></div></code></pre><button id="clipButton-5" class="md:block hidden copyBtn" aria-label="Kopieer naar klembord" title="Kopieer naar klembord" data-clipboard-target="#clipText-5"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="fill-current text-white w-6 h-6"><path fill-rule="evenodd" d="M10.5 3A1.501 1.501 0 009 4.5h6A1.5 1.5 0 0013.5 3h-3zm-2.693.178A3 3 0 0110.5 1.5h3a3 3 0 012.694 1.678c.497.042.992.092 1.486.15 1.497.173 2.57 1.46 2.57 2.929V19.5a3 3 0 01-3 3H6.75a3 3 0 01-3-3V6.257c0-1.47 1.073-2.756 2.57-2.93.493-.057.989-.107 1.487-.15z" clip-rule="evenodd"></path></svg></button></div>
+<p>We have created a stateful widget, but there's more to it. We must pass a Category from our <code>CategoriesList</code> widget to this new one.</p>
+<p>This was done by adding two lines, just like we would do with <code>__construct()</code> in PHP:</p>
+<div class="relative code-block-wrapper"><pre><code data-theme="olaolu-palenight" data-lang="dart" class="torchlight" style="background-color: #292D3E; --theme-selection-background: #7580B850;" id="clipText-6"><!-- Syntax highlighted by torchlight.dev --><div class="line"><span style="color: #C792EA;">final</span><span style="color: #BFC7D5;"> </span><span style="color: #FFCB6B;">Category</span><span style="color: #BFC7D5;"> category;</span></div><div class="line">&nbsp;</div><div class="line"><span style="color: #C792EA;">const</span><span style="color: #BFC7D5;"> </span><span style="color: #FFCB6B;">CategoryEdit</span><span style="color: #BFC7D5;">(</span><span style="color: #FF5572;">this</span><span style="color: #BFC7D5;">.category, {</span><span style="color: #FF5572;">super</span><span style="color: #BFC7D5;">.key});</span></div></code></pre><button id="clipButton-6" class="md:block hidden copyBtn" aria-label="Kopieer naar klembord" title="Kopieer naar klembord" data-clipboard-target="#clipText-6"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="fill-current text-white w-6 h-6"><path fill-rule="evenodd" d="M10.5 3A1.501 1.501 0 009 4.5h6A1.5 1.5 0 0013.5 3h-3zm-2.693.178A3 3 0 0110.5 1.5h3a3 3 0 012.694 1.678c.497.042.992.092 1.486.15 1.497.173 2.57 1.46 2.57 2.929V19.5a3 3 0 01-3 3H6.75a3 3 0 01-3-3V6.257c0-1.47 1.073-2.756 2.57-2.93.493-.057.989-.107 1.487-.15z" clip-rule="evenodd"></path></svg></button></div>
+<p>This will allow us to call <code>CategoryEdit(category)</code> and pass the <code>category</code> object to the new widget.</p>
+<p>Next, we must transfer more code, including our <code>Form</code> and <code>TextFormField</code> widgets. We will also need to move the <code>saveCategory</code> method:</p>
+<p><strong>lib/widgets/category_edit.dart</strong></p>
+<div class="relative code-block-wrapper"><pre><code data-theme="olaolu-palenight" data-lang="dart" class="torchlight" style="background-color: #292D3E; --theme-selection-background: #7580B850;" id="clipText-7"><!-- Syntax highlighted by torchlight.dev --><div class="line"><span style="color: #697098;">// ...</span></div><div class="line">&nbsp;</div><div class="line"><span style="color: #C792EA;">class</span><span style="color: #BFC7D5;"> </span><span style="color: #FFCB6B;">CategoryEditState</span><span style="color: #BFC7D5;"> </span><span style="color: #C792EA;">extends</span><span style="color: #BFC7D5;"> </span><span style="color: #FFCB6B;">State</span><span style="color: #C792EA;">&lt;</span><span style="color: #FFCB6B;">CategoryEdit</span><span style="color: #C792EA;">&gt;</span><span style="color: #BFC7D5;"> {</span></div><div class="line"><span style="color: #BFC7D5;">  </span><span style="color: #C792EA;">final</span><span style="color: #BFC7D5;"> </span><span style="color: #FFCB6B;">GlobalKey</span><span style="color: #C792EA;">&lt;</span><span style="color: #FFCB6B;">FormState</span><span style="color: #C792EA;">&gt;</span><span style="color: #BFC7D5;"> _formKey </span><span style="color: #C792EA;">=</span><span style="color: #BFC7D5;"> </span><span style="color: #FFCB6B;">GlobalKey</span><span style="color: #C792EA;">&lt;</span><span style="color: #FFCB6B;">FormState</span><span style="color: #C792EA;">&gt;</span><span style="color: #BFC7D5;">();</span></div><div class="line"><span style="color: #BFC7D5;">  </span><span style="color: #C792EA;">final</span><span style="color: #BFC7D5;"> categoryNameController </span><span style="color: #C792EA;">=</span><span style="color: #BFC7D5;"> </span><span style="color: #FFCB6B;">TextEditingController</span><span style="color: #BFC7D5;">();</span></div><div class="line"><span style="color: #BFC7D5;">  </span><span style="color: #FFCB6B;">ApiService</span><span style="color: #BFC7D5;"> apiService </span><span style="color: #C792EA;">=</span><span style="color: #BFC7D5;"> </span><span style="color: #FFCB6B;">ApiService</span><span style="color: #BFC7D5;">();</span></div><div class="line"><span style="color: #BFC7D5;">  </span><span style="color: #FFCB6B;">String</span><span style="color: #BFC7D5;"> errorMessage </span><span style="color: #C792EA;">=</span><span style="color: #BFC7D5;"> </span><span style="color: #C3E88D;">''</span><span style="color: #BFC7D5;">;</span></div><div class="line">&nbsp;</div><div class="line"><span style="color: #BFC7D5;">  </span><span style="color: #FFCB6B;">Future</span><span style="color: #BFC7D5;"> </span><span style="color: #82AAFF;">saveCategory</span><span style="color: #BFC7D5;">(context) </span><span style="color: #C792EA;">async</span><span style="color: #BFC7D5;"> {</span></div><div class="line"><span style="color: #BFC7D5;">    </span><span style="color: #C792EA;">final</span><span style="color: #BFC7D5;"> form </span><span style="color: #C792EA;">=</span><span style="color: #BFC7D5;"> _formKey.currentState;</span></div><div class="line">&nbsp;</div><div class="line"><span style="color: #BFC7D5;">    </span><span style="color: #C792EA;">if</span><span style="color: #BFC7D5;"> (</span><span style="color: #C792EA;">!</span><span style="color: #BFC7D5;">form</span><span style="color: #C792EA;">!</span><span style="color: #BFC7D5;">.</span><span style="color: #82AAFF;">validate</span><span style="color: #BFC7D5;">()) {</span></div><div class="line"><span style="color: #BFC7D5;">      </span><span style="color: #C792EA;">return</span><span style="color: #BFC7D5;">;</span></div><div class="line"><span style="color: #BFC7D5;">    }</span></div><div class="line">&nbsp;</div><div class="line"><span style="color: #BFC7D5;">    apiService</span></div><div class="line"><span style="color: #BFC7D5;">        .</span><span style="color: #82AAFF;">saveCategory</span><span style="color: #BFC7D5;">(widget.category.id, categoryNameController.text)</span></div><div class="line"><span style="color: #BFC7D5;">        .</span><span style="color: #82AAFF;">then</span><span style="color: #BFC7D5;">((</span><span style="color: #FFCB6B;">dynamic</span><span style="color: #BFC7D5;"> response) </span><span style="color: #89DDFF;">=&gt;</span><span style="color: #BFC7D5;"> </span><span style="color: #FFCB6B;">Navigator</span><span style="color: #BFC7D5;">.</span><span style="color: #82AAFF;">pop</span><span style="color: #BFC7D5;">(context))</span></div><div class="line"><span style="color: #BFC7D5;">        .</span><span style="color: #82AAFF;">catchError</span><span style="color: #BFC7D5;">((error) {</span></div><div class="line"><span style="color: #BFC7D5;">      </span><span style="color: #82AAFF;">setState</span><span style="color: #BFC7D5;">(() {</span></div><div class="line"><span style="color: #BFC7D5;">        errorMessage </span><span style="color: #C792EA;">=</span><span style="color: #BFC7D5;"> </span><span style="color: #C3E88D;">'Failed to update category'</span><span style="color: #BFC7D5;">;</span></div><div class="line"><span style="color: #BFC7D5;">      });</span></div><div class="line"><span style="color: #BFC7D5;">    });</span></div><div class="line"><span style="color: #BFC7D5;">  }</span></div><div class="line">&nbsp;</div><div class="line"><span style="color: #BFC7D5;">  </span><span style="color: #C792EA;">@override</span></div><div class="line"><span style="color: #BFC7D5;">  </span><span style="color: #C792EA;">void</span><span style="color: #BFC7D5;"> </span><span style="color: #82AAFF;">initState</span><span style="color: #BFC7D5;">() {</span></div><div class="line"><span style="color: #BFC7D5;">    categoryNameController.text </span><span style="color: #C792EA;">=</span><span style="color: #BFC7D5;"> widget.category.name;</span></div><div class="line"><span style="color: #BFC7D5;">    </span><span style="color: #FF5572;">super</span><span style="color: #BFC7D5;">.</span><span style="color: #82AAFF;">initState</span><span style="color: #BFC7D5;">();</span></div><div class="line"><span style="color: #BFC7D5;">  }</span></div><div class="line">&nbsp;</div><div class="line"><span style="color: #697098;">// ...</span></div></code></pre><button id="clipButton-7" class="md:block hidden copyBtn" aria-label="Kopieer naar klembord" title="Kopieer naar klembord" data-clipboard-target="#clipText-7"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="fill-current text-white w-6 h-6"><path fill-rule="evenodd" d="M10.5 3A1.501 1.501 0 009 4.5h6A1.5 1.5 0 0013.5 3h-3zm-2.693.178A3 3 0 0110.5 1.5h3a3 3 0 012.694 1.678c.497.042.992.092 1.486.15 1.497.173 2.57 1.46 2.57 2.929V19.5a3 3 0 01-3 3H6.75a3 3 0 01-3-3V6.257c0-1.47 1.073-2.756 2.57-2.93.493-.057.989-.107 1.487-.15z" clip-rule="evenodd"></path></svg></button></div>
+<p>Now, we have to move our UI code from <code>CategoriesList</code> to <code>CategoryEdit</code>:</p>
+<p><strong>Note:</strong> Biggest change is adding a Cancel button to the form.</p>
+<p><strong>lib/widgets/category_edit.dart</strong></p>
+<div class="relative code-block-wrapper"><pre><code data-theme="olaolu-palenight" data-lang="dart" class="torchlight" style="background-color: #292D3E; --theme-selection-background: #7580B850;" id="clipText-8"><!-- Syntax highlighted by torchlight.dev --><div class="line"><span style="color: #697098;">// ...</span></div><div class="line">&nbsp;</div><div class="line"><span style="color: #BFC7D5;"> </span><span style="color: #C792EA;">@override</span></div><div class="line"><span style="color: #BFC7D5;">  </span><span style="color: #FFCB6B;">Widget</span><span style="color: #BFC7D5;"> </span><span style="color: #82AAFF;">build</span><span style="color: #BFC7D5;">(</span><span style="color: #FFCB6B;">BuildContext</span><span style="color: #BFC7D5;"> context) {</span></div><div class="line"><span style="color: #BFC7D5;">    </span><span style="color: #C792EA;">return</span><span style="color: #BFC7D5;"> </span><span style="color: #FFCB6B;">Container</span><span style="color: #BFC7D5;">(</span></div><div class="line"><span style="color: #BFC7D5;">      padding</span><span style="color: #89DDFF;">:</span><span style="color: #BFC7D5;"> </span><span style="color: #FFCB6B;">EdgeInsets</span><span style="color: #BFC7D5;">.</span><span style="color: #82AAFF;">all</span><span style="color: #BFC7D5;">(</span><span style="color: #F78C6C;">20</span><span style="color: #BFC7D5;">),</span></div><div class="line"><span style="color: #BFC7D5;">      child</span><span style="color: #89DDFF;">:</span><span style="color: #BFC7D5;"> </span><span style="color: #FFCB6B;">Form</span><span style="color: #BFC7D5;">(</span></div><div class="line"><span style="color: #BFC7D5;">        key</span><span style="color: #89DDFF;">:</span><span style="color: #BFC7D5;"> _formKey,</span></div><div class="line"><span style="color: #BFC7D5;">        child</span><span style="color: #89DDFF;">:</span><span style="color: #BFC7D5;"> </span><span style="color: #FFCB6B;">Column</span><span style="color: #BFC7D5;">(</span></div><div class="line"><span style="color: #BFC7D5;">          children</span><span style="color: #89DDFF;">:</span><span style="color: #BFC7D5;"> [</span></div><div class="line"><span style="color: #BFC7D5;">            </span><span style="color: #FFCB6B;">Text</span><span style="color: #BFC7D5;">(</span><span style="color: #C3E88D;">'Edit Category'</span><span style="color: #BFC7D5;">),</span></div><div class="line"><span style="color: #BFC7D5;">            </span><span style="color: #FFCB6B;">TextFormField</span><span style="color: #BFC7D5;">(</span></div><div class="line"><span style="color: #BFC7D5;">              decoration</span><span style="color: #89DDFF;">:</span><span style="color: #BFC7D5;"> </span><span style="color: #FFCB6B;">InputDecoration</span><span style="color: #BFC7D5;">(</span></div><div class="line"><span style="color: #BFC7D5;">                labelText</span><span style="color: #89DDFF;">:</span><span style="color: #BFC7D5;"> </span><span style="color: #C3E88D;">'Category Name'</span><span style="color: #BFC7D5;">,</span></div><div class="line"><span style="color: #BFC7D5;">              ),</span></div><div class="line"><span style="color: #BFC7D5;">              controller</span><span style="color: #89DDFF;">:</span><span style="color: #BFC7D5;"> categoryNameController,</span></div><div class="line"><span style="color: #BFC7D5;">              validator</span><span style="color: #89DDFF;">:</span><span style="color: #BFC7D5;"> (</span><span style="color: #FFCB6B;">String</span><span style="color: #89DDFF;">?</span><span style="color: #BFC7D5;"> value) {</span></div><div class="line"><span style="color: #BFC7D5;">                </span><span style="color: #C792EA;">if</span><span style="color: #BFC7D5;"> (value </span><span style="color: #C792EA;">==</span><span style="color: #BFC7D5;"> </span><span style="color: #82AAFF;">null</span><span style="color: #BFC7D5;"> </span><span style="color: #89DDFF;">||</span><span style="color: #BFC7D5;"> value.isEmpty) {</span></div><div class="line"><span style="color: #BFC7D5;">                  </span><span style="color: #C792EA;">return</span><span style="color: #BFC7D5;"> </span><span style="color: #C3E88D;">'Please enter category name'</span><span style="color: #BFC7D5;">;</span></div><div class="line"><span style="color: #BFC7D5;">                }</span></div><div class="line"><span style="color: #BFC7D5;">                </span><span style="color: #C792EA;">return</span><span style="color: #BFC7D5;"> </span><span style="color: #82AAFF;">null</span><span style="color: #BFC7D5;">;</span></div><div class="line"><span style="color: #BFC7D5;">              },</span></div><div class="line"><span style="color: #BFC7D5;">              onChanged</span><span style="color: #89DDFF;">:</span><span style="color: #BFC7D5;"> (</span><span style="color: #FFCB6B;">String</span><span style="color: #BFC7D5;"> value) {</span></div><div class="line"><span style="color: #BFC7D5;">                </span><span style="color: #82AAFF;">setState</span><span style="color: #BFC7D5;">(() {</span></div><div class="line"><span style="color: #BFC7D5;">                  errorMessage </span><span style="color: #C792EA;">=</span><span style="color: #BFC7D5;"> </span><span style="color: #C3E88D;">''</span><span style="color: #BFC7D5;">;</span></div><div class="line"><span style="color: #BFC7D5;">                });</span></div><div class="line"><span style="color: #BFC7D5;">              },</span></div><div class="line"><span style="color: #BFC7D5;">            ),</span></div><div class="line"><span style="color: #BFC7D5;">            </span><span style="color: #FFCB6B;">Padding</span><span style="color: #BFC7D5;">(</span></div><div class="line"><span style="color: #BFC7D5;">              padding</span><span style="color: #89DDFF;">:</span><span style="color: #BFC7D5;"> </span><span style="color: #FFCB6B;">EdgeInsets</span><span style="color: #BFC7D5;">.</span><span style="color: #82AAFF;">only</span><span style="color: #BFC7D5;">(top</span><span style="color: #89DDFF;">:</span><span style="color: #BFC7D5;"> </span><span style="color: #F78C6C;">20</span><span style="color: #BFC7D5;">),</span></div><div class="line"><span style="color: #BFC7D5;">              child</span><span style="color: #89DDFF;">:</span><span style="color: #BFC7D5;"> </span><span style="color: #FFCB6B;">Row</span><span style="color: #BFC7D5;">(</span></div><div class="line"><span style="color: #BFC7D5;">                mainAxisAlignment</span><span style="color: #89DDFF;">:</span><span style="color: #BFC7D5;"> </span><span style="color: #FFCB6B;">MainAxisAlignment</span><span style="color: #BFC7D5;">.spaceBetween,</span></div><div class="line"><span style="color: #BFC7D5;">                children</span><span style="color: #89DDFF;">:</span><span style="color: #BFC7D5;"> [</span></div><div class="line"><span style="color: #BFC7D5;">                  </span><span style="color: #697098;">// We have also added a Cancel button</span></div><div class="line"><span style="color: #BFC7D5;">                  </span><span style="color: #FFCB6B;">ElevatedButton</span><span style="color: #BFC7D5;">(</span></div><div class="line"><span style="color: #BFC7D5;">                    onPressed</span><span style="color: #89DDFF;">:</span><span style="color: #BFC7D5;"> () </span><span style="color: #89DDFF;">=&gt;</span><span style="color: #BFC7D5;"> </span><span style="color: #FFCB6B;">Navigator</span><span style="color: #BFC7D5;">.</span><span style="color: #82AAFF;">pop</span><span style="color: #BFC7D5;">(context),</span></div><div class="line"><span style="color: #BFC7D5;">                    style</span><span style="color: #89DDFF;">:</span><span style="color: #BFC7D5;"> </span><span style="color: #FFCB6B;">ElevatedButton</span><span style="color: #BFC7D5;">.</span><span style="color: #82AAFF;">styleFrom</span><span style="color: #BFC7D5;">(</span></div><div class="line"><span style="color: #BFC7D5;">                      backgroundColor</span><span style="color: #89DDFF;">:</span><span style="color: #BFC7D5;"> </span><span style="color: #FFCB6B;">Colors</span><span style="color: #BFC7D5;">.red,</span></div><div class="line"><span style="color: #BFC7D5;">                      foregroundColor</span><span style="color: #89DDFF;">:</span><span style="color: #BFC7D5;"> </span><span style="color: #FFCB6B;">Colors</span><span style="color: #BFC7D5;">.white,</span></div><div class="line"><span style="color: #BFC7D5;">                    ),</span></div><div class="line"><span style="color: #BFC7D5;">                    child</span><span style="color: #89DDFF;">:</span><span style="color: #BFC7D5;"> </span><span style="color: #FFCB6B;">Text</span><span style="color: #BFC7D5;">(</span><span style="color: #C3E88D;">'Cancel'</span><span style="color: #BFC7D5;">),</span></div><div class="line"><span style="color: #BFC7D5;">                  ),</span></div><div class="line"><span style="color: #BFC7D5;">                  </span><span style="color: #FFCB6B;">ElevatedButton</span><span style="color: #BFC7D5;">(</span></div><div class="line"><span style="color: #BFC7D5;">                    onPressed</span><span style="color: #89DDFF;">:</span><span style="color: #BFC7D5;"> () {</span></div><div class="line"><span style="color: #BFC7D5;">                      </span><span style="color: #82AAFF;">saveCategory</span><span style="color: #BFC7D5;">(context);</span></div><div class="line"><span style="color: #BFC7D5;">                    },</span></div><div class="line"><span style="color: #BFC7D5;">                    style</span><span style="color: #89DDFF;">:</span><span style="color: #BFC7D5;"> </span><span style="color: #FFCB6B;">ElevatedButton</span><span style="color: #BFC7D5;">.</span><span style="color: #82AAFF;">styleFrom</span><span style="color: #BFC7D5;">(</span></div><div class="line"><span style="color: #BFC7D5;">                      backgroundColor</span><span style="color: #89DDFF;">:</span><span style="color: #BFC7D5;"> </span><span style="color: #FFCB6B;">Colors</span><span style="color: #BFC7D5;">.purple,</span></div><div class="line"><span style="color: #BFC7D5;">                      foregroundColor</span><span style="color: #89DDFF;">:</span><span style="color: #BFC7D5;"> </span><span style="color: #FFCB6B;">Colors</span><span style="color: #BFC7D5;">.white,</span></div><div class="line"><span style="color: #BFC7D5;">                    ),</span></div><div class="line"><span style="color: #BFC7D5;">                    child</span><span style="color: #89DDFF;">:</span><span style="color: #BFC7D5;"> </span><span style="color: #FFCB6B;">Text</span><span style="color: #BFC7D5;">(</span><span style="color: #C3E88D;">'Update'</span><span style="color: #BFC7D5;">),</span></div><div class="line"><span style="color: #BFC7D5;">                  ),</span></div><div class="line"><span style="color: #BFC7D5;">                ],</span></div><div class="line"><span style="color: #BFC7D5;">              ),</span></div><div class="line"><span style="color: #BFC7D5;">            ),</span></div><div class="line"><span style="color: #BFC7D5;">            </span><span style="color: #FFCB6B;">Text</span><span style="color: #BFC7D5;">(</span></div><div class="line"><span style="color: #BFC7D5;">              errorMessage,</span></div><div class="line"><span style="color: #BFC7D5;">              style</span><span style="color: #89DDFF;">:</span><span style="color: #BFC7D5;"> </span><span style="color: #FFCB6B;">TextStyle</span><span style="color: #BFC7D5;">(color</span><span style="color: #89DDFF;">:</span><span style="color: #BFC7D5;"> </span><span style="color: #FFCB6B;">Colors</span><span style="color: #BFC7D5;">.red),</span></div><div class="line"><span style="color: #BFC7D5;">            ),</span></div><div class="line"><span style="color: #BFC7D5;">          ],</span></div><div class="line"><span style="color: #BFC7D5;">        ),</span></div><div class="line"><span style="color: #BFC7D5;">      ),</span></div><div class="line"><span style="color: #BFC7D5;">    );</span></div><div class="line"><span style="color: #BFC7D5;">}</span></div></code></pre><button id="clipButton-8" class="md:block hidden copyBtn" aria-label="Kopieer naar klembord" title="Kopieer naar klembord" data-clipboard-target="#clipText-8"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="fill-current text-white w-6 h-6"><path fill-rule="evenodd" d="M10.5 3A1.501 1.501 0 009 4.5h6A1.5 1.5 0 0013.5 3h-3zm-2.693.178A3 3 0 0110.5 1.5h3a3 3 0 012.694 1.678c.497.042.992.092 1.486.15 1.497.173 2.57 1.46 2.57 2.929V19.5a3 3 0 01-3 3H6.75a3 3 0 01-3-3V6.257c0-1.47 1.073-2.756 2.57-2.93.493-.057.989-.107 1.487-.15z" clip-rule="evenodd"></path></svg></button></div>
+<p>Once this is done, we can remove the code from <code>CategoriesList</code> and import the new widget:</p>
+<p><strong>lib/screens/categories_list.dart</strong></p>
+<div class="relative code-block-wrapper"><pre><code data-theme="olaolu-palenight" data-lang="dart" class="torchlight has-add-lines has-remove-lines has-diff-lines" style="background-color: #292D3E; --theme-selection-background: #7580B850;" id="clipText-9"><!-- Syntax highlighted by torchlight.dev --><div class="line line-add line-has-background" style="background-color: #99b76d23"><span style="color: #C3E88D;">import</span><span style="color: #C3E88D;"> </span><span style="color: #C3E88D;">'package:laravel_api_flutter_app/widgets/category_edit.dart'</span><span style="color: #C3E88D;">; </span></div><div class="line">&nbsp;</div><div class="line"><span style="color: #697098;">// ...</span></div><div class="line">&nbsp;</div><div class="line"><span style="color: #C792EA;">return</span><span style="color: #BFC7D5;"> </span><span style="color: #FFCB6B;">ListTile</span><span style="color: #BFC7D5;">(</span></div><div class="line"><span style="color: #BFC7D5;">  title</span><span style="color: #89DDFF;">:</span><span style="color: #BFC7D5;"> </span><span style="color: #FFCB6B;">Text</span><span style="color: #BFC7D5;">(category.name),</span></div><div class="line"><span style="color: #BFC7D5;">  trailing</span><span style="color: #89DDFF;">:</span><span style="color: #BFC7D5;"> </span><span style="color: #FFCB6B;">IconButton</span><span style="color: #BFC7D5;">(</span></div><div class="line"><span style="color: #BFC7D5;">      onPressed</span><span style="color: #89DDFF;">:</span><span style="color: #BFC7D5;"> () {</span></div><div class="line line-remove line-has-background" style="background-color: #ef535033"><span style="color: #f07178;">        selectedCategory </span><span style="color: #f07178;">=</span><span style="color: #f07178;"> category;</span></div><div class="line line-remove line-has-background" style="background-color: #ef535033"><span style="color: #f07178;">        categoryNameController.text </span><span style="color: #f07178;">=</span><span style="color: #f07178;"> category.name;</span></div><div class="line"><span style="color: #BFC7D5;">        </span><span style="color: #82AAFF;">showModalBottomSheet</span><span style="color: #BFC7D5;">(</span></div><div class="line"><span style="color: #BFC7D5;">            context</span><span style="color: #89DDFF;">:</span><span style="color: #BFC7D5;"> context,</span></div><div class="line line-add line-has-background" style="background-color: #99b76d23"><span style="color: #C3E88D;">            isScrollControlled</span><span style="color: #C3E88D;">:</span><span style="color: #C3E88D;"> </span><span style="color: #C3E88D;">true</span><span style="color: #C3E88D;">,</span></div><div class="line"><span style="color: #BFC7D5;">            builder</span><span style="color: #89DDFF;">:</span><span style="color: #BFC7D5;"> (</span><span style="color: #FFCB6B;">BuildContext</span><span style="color: #BFC7D5;"> context) {</span></div><div class="line line-remove line-has-background" style="background-color: #ef535033"><span style="color: #f07178;">              </span><span style="color: #f07178;">return</span><span style="color: #f07178;"> </span><span style="color: #f07178;">Container</span><span style="color: #f07178;">(</span></div><div class="line line-remove line-has-background" style="background-color: #ef535033"><span style="color: #f07178;">                padding</span><span style="color: #f07178;">:</span><span style="color: #f07178;"> </span><span style="color: #f07178;">EdgeInsets</span><span style="color: #f07178;">.</span><span style="color: #f07178;">all</span><span style="color: #f07178;">(</span><span style="color: #f07178;">20</span><span style="color: #f07178;">),</span></div><div class="line line-remove line-has-background" style="background-color: #ef535033"><span style="color: #f07178;">                child</span><span style="color: #f07178;">:</span><span style="color: #f07178;"> </span><span style="color: #f07178;">Form</span><span style="color: #f07178;">(</span></div><div class="line line-remove line-has-background" style="background-color: #ef535033"><span style="color: #f07178;">                  key</span><span style="color: #f07178;">:</span><span style="color: #f07178;"> _formKey,</span></div><div class="line line-remove line-has-background" style="background-color: #ef535033"><span style="color: #f07178;">                  child</span><span style="color: #f07178;">:</span><span style="color: #f07178;"> </span><span style="color: #f07178;">Column</span><span style="color: #f07178;">(</span></div><div class="line line-remove line-has-background" style="background-color: #ef535033"><span style="color: #f07178;">                    children</span><span style="color: #f07178;">:</span><span style="color: #f07178;"> [</span></div><div class="line line-remove line-has-background" style="background-color: #ef535033"><span style="color: #f07178;">                      </span><span style="color: #f07178;">Text</span><span style="color: #f07178;">(</span><span style="color: #f07178;">'Edit Category'</span><span style="color: #f07178;">),</span></div><div class="line line-remove line-has-background" style="background-color: #ef535033"><span style="color: #f07178;">                      </span><span style="color: #f07178;">TextFormField</span><span style="color: #f07178;">(</span></div><div class="line line-remove line-has-background" style="background-color: #ef535033"><span style="color: #f07178;">                        decoration</span><span style="color: #f07178;">:</span><span style="color: #f07178;"> </span><span style="color: #f07178;">InputDecoration</span><span style="color: #f07178;">(</span></div><div class="line line-remove line-has-background" style="background-color: #ef535033"><span style="color: #f07178;">                          labelText</span><span style="color: #f07178;">:</span><span style="color: #f07178;"> </span><span style="color: #f07178;">'Category Name'</span><span style="color: #f07178;">,</span></div><div class="line line-remove line-has-background" style="background-color: #ef535033"><span style="color: #f07178;">                        ),</span></div><div class="line line-remove line-has-background" style="background-color: #ef535033"><span style="color: #f07178;">                        controller</span><span style="color: #f07178;">:</span><span style="color: #f07178;"> categoryNameController,</span></div><div class="line line-remove line-has-background" style="background-color: #ef535033"><span style="color: #f07178;">                        validator</span><span style="color: #f07178;">:</span><span style="color: #f07178;"> (</span><span style="color: #f07178;">String</span><span style="color: #f07178;">?</span><span style="color: #f07178;"> value) {</span></div><div class="line line-remove line-has-background" style="background-color: #ef535033"><span style="color: #f07178;">                          </span><span style="color: #f07178;">if</span><span style="color: #f07178;"> (value </span><span style="color: #f07178;">==</span><span style="color: #f07178;"> </span><span style="color: #f07178;">null</span><span style="color: #f07178;"> </span><span style="color: #f07178;">||</span></div><div class="line line-remove line-has-background" style="background-color: #ef535033"><span style="color: #f07178;">                              value.isEmpty) {</span></div><div class="line line-remove line-has-background" style="background-color: #ef535033"><span style="color: #f07178;">                            </span><span style="color: #f07178;">return</span><span style="color: #f07178;"> </span><span style="color: #f07178;">'Please enter category name'</span><span style="color: #f07178;">;</span></div><div class="line line-remove line-has-background" style="background-color: #ef535033"><span style="color: #f07178;">                          }</span></div><div class="line line-remove line-has-background" style="background-color: #ef535033"><span style="color: #f07178;">                          </span><span style="color: #f07178;">return</span><span style="color: #f07178;"> </span><span style="color: #f07178;">null</span><span style="color: #f07178;">;</span></div><div class="line line-remove line-has-background" style="background-color: #ef535033"><span style="color: #f07178;">                        },</span></div><div class="line line-remove line-has-background" style="background-color: #ef535033"><span style="color: #f07178;">                      ),</span></div><div class="line line-remove line-has-background" style="background-color: #ef535033"><span style="color: #f07178;">                      </span><span style="color: #f07178;">Padding</span><span style="color: #f07178;">(</span></div><div class="line line-remove line-has-background" style="background-color: #ef535033"><span style="color: #f07178;">                        padding</span><span style="color: #f07178;">:</span><span style="color: #f07178;"> </span><span style="color: #f07178;">EdgeInsets</span><span style="color: #f07178;">.</span><span style="color: #f07178;">only</span><span style="color: #f07178;">(top</span><span style="color: #f07178;">:</span><span style="color: #f07178;"> </span><span style="color: #f07178;">20</span><span style="color: #f07178;">),</span></div><div class="line line-remove line-has-background" style="background-color: #ef535033"><span style="color: #f07178;">                        child</span><span style="color: #f07178;">:</span><span style="color: #f07178;"> </span><span style="color: #f07178;">ElevatedButton</span><span style="color: #f07178;">(</span></div><div class="line line-remove line-has-background" style="background-color: #ef535033"><span style="color: #f07178;">                          onPressed</span><span style="color: #f07178;">:</span><span style="color: #f07178;"> () {</span></div><div class="line line-remove line-has-background" style="background-color: #ef535033"><span style="color: #f07178;">                            apiService.</span><span style="color: #f07178;">saveCategory</span><span style="color: #f07178;">(selectedCategory.id, categoryNameController.text);</span></div><div class="line line-remove line-has-background" style="background-color: #ef535033"><span style="color: #f07178;">                          },</span></div><div class="line line-remove line-has-background" style="background-color: #ef535033"><span style="color: #f07178;">                          child</span><span style="color: #f07178;">:</span><span style="color: #f07178;"> </span><span style="color: #f07178;">Text</span><span style="color: #f07178;">(</span><span style="color: #f07178;">'Update'</span><span style="color: #f07178;">),</span></div><div class="line line-remove line-has-background" style="background-color: #ef535033"><span style="color: #f07178;">                        ),</span></div><div class="line line-remove line-has-background" style="background-color: #ef535033"><span style="color: #f07178;">                      ),</span></div><div class="line line-remove line-has-background" style="background-color: #ef535033"><span style="color: #f07178;">                    ],</span></div><div class="line line-remove line-has-background" style="background-color: #ef535033"><span style="color: #f07178;">                  ),</span></div><div class="line line-remove line-has-background" style="background-color: #ef535033"><span style="color: #f07178;">                ),</span></div><div class="line line-add line-has-background" style="background-color: #99b76d23"><span style="color: #C3E88D;">                </span><span style="color: #C3E88D;">return</span><span style="color: #C3E88D;"> </span><span style="color: #C3E88D;">CategoryEdit</span><span style="color: #C3E88D;">(category);</span></div><div class="line"><span style="color: #BFC7D5;">              );</span></div><div class="line"><span style="color: #BFC7D5;">            });</span></div><div class="line"><span style="color: #BFC7D5;">      },</span></div><div class="line"><span style="color: #BFC7D5;">      icon</span><span style="color: #89DDFF;">:</span><span style="color: #BFC7D5;"> </span><span style="color: #FFCB6B;">Icon</span><span style="color: #BFC7D5;">(</span><span style="color: #FFCB6B;">Icons</span><span style="color: #BFC7D5;">.edit)),</span></div><div class="line"><span style="color: #BFC7D5;">);</span></div><div class="line">&nbsp;</div><div class="line"><span style="color: #697098;">// ...</span></div></code></pre><button id="clipButton-9" class="md:block hidden copyBtn" aria-label="Kopieer naar klembord" title="Kopieer naar klembord" data-clipboard-target="#clipText-9"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="fill-current text-white w-6 h-6"><path fill-rule="evenodd" d="M10.5 3A1.501 1.501 0 009 4.5h6A1.5 1.5 0 0013.5 3h-3zm-2.693.178A3 3 0 0110.5 1.5h3a3 3 0 012.694 1.678c.497.042.992.092 1.486.15 1.497.173 2.57 1.46 2.57 2.929V19.5a3 3 0 01-3 3H6.75a3 3 0 01-3-3V6.257c0-1.47 1.073-2.756 2.57-2.93.493-.057.989-.107 1.487-.15z" clip-rule="evenodd"></path></svg></button></div>
+<p>Your application should still work as it did before. The most significant change you will see now is that our Modal takes up the whole screen and has a Cancel button:</p>
+<p><img src="./15 - Partial Widgets - Code Refactoring _ Laravel Daily_files/category-edit-modal-updated-1.png" alt=""></p>
+<hr>
+<p>In the next lesson, we will focus on Real-time updates for our list to solve an issue with missing UI updates. This will provide a nicer user experience.</p>
+<hr>
+<p>Check out the <a href="https://github.com/LaravelDaily/laravel-api-flutter-app-code/commit/7a18956c3f8bee6ff3a06ce1748b3924379dcab0">GitHub Commit</a> for this lesson.</p>
+
+                            </article>
+                                            </div>
+
+
+                    <!-- Right Sidebar: Lessons List -->
+                    <aside :class="{ &#39;lg:col-span-4&#39;: sidebar, &#39;hidden&#39;: !sidebar }" class="lg:col-span-4">
+                        <div>
+                            <!-- Course Info -->
+                            <div class="bg-slate-800 rounded-xl border border-slate-700 p-6 mb-6">
+                                <h3 class="font-bold text-lg mb-4">Flutter 3 Mobile App with Laravel 12 API</h3>
+                                <div class="space-y-3 text-sm text-gray-300">
+                                    <div class="flex items-center gap-3">
+                                        <svg class="w-5 h-5 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 4v16M17 4v16M3 8h4m10 0h4M3 12h18M3 16h4m10 0h4M4 20h16a1 1 0 001-1V5a1 1 0 00-1-1H4a1 1 0 00-1 1v14a1 1 0 001 1z"></path>
+                                        </svg>
+                                        <span><strong>26 text lessons</strong></span>
+                                    </div>
+                                    <div class="flex items-center gap-3">
+                                        <svg class="w-5 h-5 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                        </svg>
+                                        <span><strong>1 u 56 min leestijd</strong>
+                                            of content</span>
+                                    </div>
+                                                                                                                                                </div>
+                            </div>
+
+                            <!-- Lessons List -->
+                            <div class="bg-slate-800 rounded-xl border border-slate-700 overflow-hidden">
+                                <div class="p-4 border-b border-slate-700">
+                                    <h3 class="font-bold">Course Lessons</h3>
+                                </div>
+                                <div class="">
+                                    <div class="border-b border-slate-700">
+        <div class="p-4 bg-slate-700/30 sticky top-0">
+            <h4 class="font-semibold text-sm text-gray-300">Laravel API</h4>
+        </div>
+
+                    <a href="01 - Creating First CRUD _ Laravel Daily.html" class="lesson-item flex items-center gap-3 p-3 relative border-l-2 transition-colors duration-200 hover:bg-slate-700/20 border-l-2 border-transparent" aria-label="Course Overview - Free lesson - 5:42">
+                <div class="w-6 h-6 bg-blue-500/20 rounded flex items-center justify-center flex-shrink-0" aria-hidden="true">
+                                                                        <div class="w-8 h-8 bg-slate-700 rounded-lg flex items-center justify-center flex-shrink-0">
+                                <svg class="w-4 h-4 text-green-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+    <path d="m9 11 3 3L22 4"></path>
+</svg>                            </div>
+                                                            </div>
+                <div class="flex-1 min-w-0">
+                    <div class="text-sm font-medium">01 - Creating First CRUD</div>
+                                    </div>
+                <span class="text-xs text-gray-400 flex-shrink-0">4 min leestijd</span>
+            </a>
+                    <a href="02 - Creating Eloquent API Resource and Finishing CRUD _ Laravel Daily.html" class="lesson-item flex items-center gap-3 p-3 relative border-l-2 transition-colors duration-200 hover:bg-slate-700/20 border-l-2 border-transparent" aria-label="Course Overview - Free lesson - 5:42">
+                <div class="w-6 h-6 bg-blue-500/20 rounded flex items-center justify-center flex-shrink-0" aria-hidden="true">
+                                                                        <div class="w-8 h-8 bg-slate-700 rounded-lg flex items-center justify-center flex-shrink-0">
+                                <svg class="w-4 h-4 text-green-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+    <path d="m9 11 3 3L22 4"></path>
+</svg>                            </div>
+                                                            </div>
+                <div class="flex-1 min-w-0">
+                    <div class="text-sm font-medium">02 - Creating Eloquent API Resource and Finishing CRUD</div>
+                                    </div>
+                <span class="text-xs text-gray-400 flex-shrink-0">5 min leestijd</span>
+            </a>
+                    <a href="03 - Handling 404 API Error _ Laravel Daily.html" class="lesson-item flex items-center gap-3 p-3 relative border-l-2 transition-colors duration-200 hover:bg-slate-700/20 border-l-2 border-transparent" aria-label="Course Overview - Free lesson - 5:42">
+                <div class="w-6 h-6 bg-blue-500/20 rounded flex items-center justify-center flex-shrink-0" aria-hidden="true">
+                                                                        <div class="w-8 h-8 bg-slate-700 rounded-lg flex items-center justify-center flex-shrink-0">
+                                <svg class="w-4 h-4 text-green-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+    <path d="m9 11 3 3L22 4"></path>
+</svg>                            </div>
+                                                            </div>
+                <div class="flex-1 min-w-0">
+                    <div class="text-sm font-medium">03 - Handling 404 API Error</div>
+                                    </div>
+                <span class="text-xs text-gray-400 flex-shrink-0">2 min leestijd</span>
+            </a>
+                    <a href="04 - Transactions CRUD _ Laravel Daily.html" class="lesson-item flex items-center gap-3 p-3 relative border-l-2 transition-colors duration-200 hover:bg-slate-700/20 border-l-2 border-transparent" aria-label="Course Overview - Free lesson - 5:42">
+                <div class="w-6 h-6 bg-blue-500/20 rounded flex items-center justify-center flex-shrink-0" aria-hidden="true">
+                                                                        <div class="w-8 h-8 bg-slate-700 rounded-lg flex items-center justify-center flex-shrink-0">
+                                <svg class="w-4 h-4 text-green-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+    <path d="m9 11 3 3L22 4"></path>
+</svg>                            </div>
+                                                            </div>
+                <div class="flex-1 min-w-0">
+                    <div class="text-sm font-medium">04 - Transactions CRUD</div>
+                                    </div>
+                <span class="text-xs text-gray-400 flex-shrink-0">4 min leestijd</span>
+            </a>
+                    <a href="05 - API Authentication _ Laravel Daily.html" class="lesson-item flex items-center gap-3 p-3 relative border-l-2 transition-colors duration-200 hover:bg-slate-700/20 border-l-2 border-transparent" aria-label="Course Overview - Free lesson - 5:42">
+                <div class="w-6 h-6 bg-blue-500/20 rounded flex items-center justify-center flex-shrink-0" aria-hidden="true">
+                                                                        <div class="w-8 h-8 bg-slate-700 rounded-lg flex items-center justify-center flex-shrink-0">
+                                <svg class="w-4 h-4 text-green-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+    <path d="m9 11 3 3L22 4"></path>
+</svg>                            </div>
+                                                            </div>
+                <div class="flex-1 min-w-0">
+                    <div class="text-sm font-medium">05 - API Authentication</div>
+                                    </div>
+                <span class="text-xs text-gray-400 flex-shrink-0">4 min leestijd</span>
+            </a>
+                    <a href="06 - Simple Multitenancy Setup _ Laravel Daily.html" class="lesson-item flex items-center gap-3 p-3 relative border-l-2 transition-colors duration-200 hover:bg-slate-700/20 border-l-2 border-transparent" aria-label="Course Overview - Free lesson - 5:42">
+                <div class="w-6 h-6 bg-blue-500/20 rounded flex items-center justify-center flex-shrink-0" aria-hidden="true">
+                                                                        <div class="w-8 h-8 bg-slate-700 rounded-lg flex items-center justify-center flex-shrink-0">
+                                <svg class="w-4 h-4 text-green-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+    <path d="m9 11 3 3L22 4"></path>
+</svg>                            </div>
+                                                            </div>
+                <div class="flex-1 min-w-0">
+                    <div class="text-sm font-medium">06 - Simple Multitenancy Setup</div>
+                                    </div>
+                <span class="text-xs text-gray-400 flex-shrink-0">3 min leestijd</span>
+            </a>
+            </div>
+    <div class="border-b border-slate-700">
+        <div class="p-4 bg-slate-700/30 sticky top-0">
+            <h4 class="font-semibold text-sm text-gray-300">Flutter Setup and Visual Widgets</h4>
+        </div>
+
+                    <a href="07 - Flutter Installation and First App _ Laravel Daily.html" class="lesson-item flex items-center gap-3 p-3 relative border-l-2 transition-colors duration-200 hover:bg-slate-700/20 border-l-2 border-transparent" aria-label="Course Overview - Free lesson - 5:42">
+                <div class="w-6 h-6 bg-blue-500/20 rounded flex items-center justify-center flex-shrink-0" aria-hidden="true">
+                                                                        <div class="w-8 h-8 bg-slate-700 rounded-lg flex items-center justify-center flex-shrink-0">
+                                <svg class="w-4 h-4 text-green-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+    <path d="m9 11 3 3L22 4"></path>
+</svg>                            </div>
+                                                            </div>
+                <div class="flex-1 min-w-0">
+                    <div class="text-sm font-medium">07 - Flutter Installation and First App</div>
+                                    </div>
+                <span class="text-xs text-gray-400 flex-shrink-0">4 min leestijd</span>
+            </a>
+                    <a href="08 - App Login Form _ Laravel Daily.html" class="lesson-item flex items-center gap-3 p-3 relative border-l-2 transition-colors duration-200 hover:bg-slate-700/20 border-l-2 border-transparent" aria-label="Course Overview - Free lesson - 5:42">
+                <div class="w-6 h-6 bg-blue-500/20 rounded flex items-center justify-center flex-shrink-0" aria-hidden="true">
+                                                                        <div class="w-8 h-8 bg-slate-700 rounded-lg flex items-center justify-center flex-shrink-0">
+                                <svg class="w-4 h-4 text-green-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+    <path d="m9 11 3 3L22 4"></path>
+</svg>                            </div>
+                                                            </div>
+                <div class="flex-1 min-w-0">
+                    <div class="text-sm font-medium">08 - App Login Form</div>
+                                    </div>
+                <span class="text-xs text-gray-400 flex-shrink-0">3 min leestijd</span>
+            </a>
+                    <a href="09 - Styling Flutter Forms _ Laravel Daily.html" class="lesson-item flex items-center gap-3 p-3 relative border-l-2 transition-colors duration-200 hover:bg-slate-700/20 border-l-2 border-transparent" aria-label="Course Overview - Free lesson - 5:42">
+                <div class="w-6 h-6 bg-blue-500/20 rounded flex items-center justify-center flex-shrink-0" aria-hidden="true">
+                                                                        <div class="w-8 h-8 bg-slate-700 rounded-lg flex items-center justify-center flex-shrink-0">
+                                <svg class="w-4 h-4 text-green-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+    <path d="m9 11 3 3L22 4"></path>
+</svg>                            </div>
+                                                            </div>
+                <div class="flex-1 min-w-0">
+                    <div class="text-sm font-medium">09 - Styling Flutter Forms</div>
+                                    </div>
+                <span class="text-xs text-gray-400 flex-shrink-0">3 min leestijd</span>
+            </a>
+                    <a href="10 - Adding Registration Form and Navigation _ Laravel Daily.html" class="lesson-item flex items-center gap-3 p-3 relative border-l-2 transition-colors duration-200 hover:bg-slate-700/20 border-l-2 border-transparent" aria-label="Course Overview - Free lesson - 5:42">
+                <div class="w-6 h-6 bg-blue-500/20 rounded flex items-center justify-center flex-shrink-0" aria-hidden="true">
+                                                                        <div class="w-8 h-8 bg-slate-700 rounded-lg flex items-center justify-center flex-shrink-0">
+                                <svg class="w-4 h-4 text-green-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+    <path d="m9 11 3 3L22 4"></path>
+</svg>                            </div>
+                                                            </div>
+                <div class="flex-1 min-w-0">
+                    <div class="text-sm font-medium">10 - Adding Registration Form and Navigation</div>
+                                    </div>
+                <span class="text-xs text-gray-400 flex-shrink-0">6 min leestijd</span>
+            </a>
+            </div>
+    <div class="border-b border-slate-700">
+        <div class="p-4 bg-slate-700/30 sticky top-0">
+            <h4 class="font-semibold text-sm text-gray-300">Flutter App: CRUD with Forms and API</h4>
+        </div>
+
+                    <a href="11 - First Screen - Categories List _ Laravel Daily.html" class="lesson-item flex items-center gap-3 p-3 relative border-l-2 transition-colors duration-200 hover:bg-slate-700/20 border-l-2 border-transparent" aria-label="Course Overview - Free lesson - 5:42">
+                <div class="w-6 h-6 bg-blue-500/20 rounded flex items-center justify-center flex-shrink-0" aria-hidden="true">
+                                                                        <div class="w-8 h-8 bg-slate-700 rounded-lg flex items-center justify-center flex-shrink-0">
+                                <svg class="w-4 h-4 text-green-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+    <path d="m9 11 3 3L22 4"></path>
+</svg>                            </div>
+                                                            </div>
+                <div class="flex-1 min-w-0">
+                    <div class="text-sm font-medium">11 - First Screen - Categories List</div>
+                                    </div>
+                <span class="text-xs text-gray-400 flex-shrink-0">4 min leestijd</span>
+            </a>
+                    <a href="12 - Automated Dart Code Fixes _ Laravel Daily.html" class="lesson-item flex items-center gap-3 p-3 relative border-l-2 transition-colors duration-200 hover:bg-slate-700/20 border-l-2 border-transparent" aria-label="Course Overview - Free lesson - 5:42">
+                <div class="w-6 h-6 bg-blue-500/20 rounded flex items-center justify-center flex-shrink-0" aria-hidden="true">
+                                                                        <div class="w-8 h-8 bg-slate-700 rounded-lg flex items-center justify-center flex-shrink-0">
+                                <svg class="w-4 h-4 text-green-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+    <path d="m9 11 3 3L22 4"></path>
+</svg>                            </div>
+                                                            </div>
+                <div class="flex-1 min-w-0">
+                    <div class="text-sm font-medium">12 - Automated Dart Code Fixes</div>
+                                    </div>
+                <span class="text-xs text-gray-400 flex-shrink-0">1 min leestijd</span>
+            </a>
+                    <a href="13 - First API Call - Categories List _ Laravel Daily.html" class="lesson-item flex items-center gap-3 p-3 relative border-l-2 transition-colors duration-200 hover:bg-slate-700/20 border-l-2 border-transparent" aria-label="Course Overview - Free lesson - 5:42">
+                <div class="w-6 h-6 bg-blue-500/20 rounded flex items-center justify-center flex-shrink-0" aria-hidden="true">
+                                                                        <div class="w-8 h-8 bg-slate-700 rounded-lg flex items-center justify-center flex-shrink-0">
+                                <svg class="w-4 h-4 text-green-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+    <path d="m9 11 3 3L22 4"></path>
+</svg>                            </div>
+                                                            </div>
+                <div class="flex-1 min-w-0">
+                    <div class="text-sm font-medium">13 - First API Call - Categories List</div>
+                                    </div>
+                <span class="text-xs text-gray-400 flex-shrink-0">7 min leestijd</span>
+            </a>
+                    <a href="14 - Editing Categories _ Laravel Daily.html" class="lesson-item flex items-center gap-3 p-3 relative border-l-2 transition-colors duration-200 hover:bg-slate-700/20 border-l-2 border-transparent" aria-label="Course Overview - Free lesson - 5:42">
+                <div class="w-6 h-6 bg-blue-500/20 rounded flex items-center justify-center flex-shrink-0" aria-hidden="true">
+                                                                        <div class="w-8 h-8 bg-slate-700 rounded-lg flex items-center justify-center flex-shrink-0">
+                                <svg class="w-4 h-4 text-green-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+    <path d="m9 11 3 3L22 4"></path>
+</svg>                            </div>
+                                                            </div>
+                <div class="flex-1 min-w-0">
+                    <div class="text-sm font-medium">14 - Editing Categories</div>
+                                    </div>
+                <span class="text-xs text-gray-400 flex-shrink-0">6 min leestijd</span>
+            </a>
+                    <a href="15 - Partial Widgets - Code Refactoring _ Laravel Daily.html" class="lesson-item flex items-center gap-3 p-3 relative border-l-2 transition-colors duration-200 bg-gradient-to-r from-blue-400/10 via-blue-300/10 to-transparent border-l-4 border-blue-500 shadow-inner ring-1 ring-blue-400/10" aria-label="Course Overview - Free lesson - 5:42">
+                <div class="w-6 h-6 bg-blue-500/20 rounded flex items-center justify-center flex-shrink-0" aria-hidden="true">
+                                                                        <div class="w-8 h-8 bg-slate-700 rounded-lg flex items-center justify-center flex-shrink-0">
+                                <svg class="w-4 h-4 text-green-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+    <path d="m9 11 3 3L22 4"></path>
+</svg>                            </div>
+                                                            </div>
+                <div class="flex-1 min-w-0">
+                    <div class="text-sm font-medium">15 - Partial Widgets - Code Refactoring</div>
+                                    </div>
+                <span class="text-xs text-gray-400 flex-shrink-0">8 min leestijd</span>
+            </a>
+                    <a href="16 - Real Time List Updates _ Laravel Daily.html" class="lesson-item flex items-center gap-3 p-3 relative border-l-2 transition-colors duration-200 hover:bg-slate-700/20 border-l-2 border-transparent" aria-label="Course Overview - Free lesson - 5:42">
+                <div class="w-6 h-6 bg-blue-500/20 rounded flex items-center justify-center flex-shrink-0" aria-hidden="true">
+                                                                                                        <div class="w-8 h-8 bg-slate-700 rounded-lg flex items-center justify-center flex-shrink-0">
+                                    <svg class="w-4 h-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M6 22a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h8a2.4 2.4 0 0 1 1.704.706l3.588 3.588A2.4 2.4 0 0 1 20 8v12a2 2 0 0 1-2 2z"></path>
+  <path d="M14 2v5a1 1 0 0 0 1 1h5"></path>
+  <path d="M10 9H8"></path>
+  <path d="M16 13H8"></path>
+  <path d="M16 17H8"></path>
+</svg>                                </div>
+                                                                                        </div>
+                <div class="flex-1 min-w-0">
+                    <div class="text-sm font-medium">16 - Real Time List Updates</div>
+                                    </div>
+                <span class="text-xs text-gray-400 flex-shrink-0">6 min leestijd</span>
+            </a>
+                    <a href="17 - Deleting Categories _ Laravel Daily.html" class="lesson-item flex items-center gap-3 p-3 relative border-l-2 transition-colors duration-200 hover:bg-slate-700/20 border-l-2 border-transparent" aria-label="Course Overview - Free lesson - 5:42">
+                <div class="w-6 h-6 bg-blue-500/20 rounded flex items-center justify-center flex-shrink-0" aria-hidden="true">
+                                                                                                        <div class="w-8 h-8 bg-slate-700 rounded-lg flex items-center justify-center flex-shrink-0">
+                                    <svg class="w-4 h-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M6 22a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h8a2.4 2.4 0 0 1 1.704.706l3.588 3.588A2.4 2.4 0 0 1 20 8v12a2 2 0 0 1-2 2z"></path>
+  <path d="M14 2v5a1 1 0 0 0 1 1h5"></path>
+  <path d="M10 9H8"></path>
+  <path d="M16 13H8"></path>
+  <path d="M16 17H8"></path>
+</svg>                                </div>
+                                                                                        </div>
+                <div class="flex-1 min-w-0">
+                    <div class="text-sm font-medium">17 - Deleting Categories</div>
+                                    </div>
+                <span class="text-xs text-gray-400 flex-shrink-0">3 min leestijd</span>
+            </a>
+                    <a href="18 - Creating Categories _ Laravel Daily.html" class="lesson-item flex items-center gap-3 p-3 relative border-l-2 transition-colors duration-200 hover:bg-slate-700/20 border-l-2 border-transparent" aria-label="Course Overview - Free lesson - 5:42">
+                <div class="w-6 h-6 bg-blue-500/20 rounded flex items-center justify-center flex-shrink-0" aria-hidden="true">
+                                                                                                        <div class="w-8 h-8 bg-slate-700 rounded-lg flex items-center justify-center flex-shrink-0">
+                                    <svg class="w-4 h-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M6 22a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h8a2.4 2.4 0 0 1 1.704.706l3.588 3.588A2.4 2.4 0 0 1 20 8v12a2 2 0 0 1-2 2z"></path>
+  <path d="M14 2v5a1 1 0 0 0 1 1h5"></path>
+  <path d="M10 9H8"></path>
+  <path d="M16 13H8"></path>
+  <path d="M16 17H8"></path>
+</svg>                                </div>
+                                                                                        </div>
+                <div class="flex-1 min-w-0">
+                    <div class="text-sm font-medium">18 - Creating Categories</div>
+                                    </div>
+                <span class="text-xs text-gray-400 flex-shrink-0">5 min leestijd</span>
+            </a>
+            </div>
+    <div class="border-b border-slate-700">
+        <div class="p-4 bg-slate-700/30 sticky top-0">
+            <h4 class="font-semibold text-sm text-gray-300">Flutter App: Adding Auth with Tokens</h4>
+        </div>
+
+                    <a href="19 - Adding Registration Functionality with API Usage _ Laravel Daily.html" class="lesson-item flex items-center gap-3 p-3 relative border-l-2 transition-colors duration-200 hover:bg-slate-700/20 border-l-2 border-transparent" aria-label="Course Overview - Free lesson - 5:42">
+                <div class="w-6 h-6 bg-blue-500/20 rounded flex items-center justify-center flex-shrink-0" aria-hidden="true">
+                                                                                                        <div class="w-8 h-8 bg-slate-700 rounded-lg flex items-center justify-center flex-shrink-0">
+                                    <svg class="w-4 h-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M6 22a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h8a2.4 2.4 0 0 1 1.704.706l3.588 3.588A2.4 2.4 0 0 1 20 8v12a2 2 0 0 1-2 2z"></path>
+  <path d="M14 2v5a1 1 0 0 0 1 1h5"></path>
+  <path d="M10 9H8"></path>
+  <path d="M16 13H8"></path>
+  <path d="M16 17H8"></path>
+</svg>                                </div>
+                                                                                        </div>
+                <div class="flex-1 min-w-0">
+                    <div class="text-sm font-medium">19 - Adding Registration Functionality with API Usage</div>
+                                    </div>
+                <span class="text-xs text-gray-400 flex-shrink-0">10 min leestijd</span>
+            </a>
+                    <a href="20 - Adding Login Functionality _ Laravel Daily.html" class="lesson-item flex items-center gap-3 p-3 relative border-l-2 transition-colors duration-200 hover:bg-slate-700/20 border-l-2 border-transparent" aria-label="Course Overview - Free lesson - 5:42">
+                <div class="w-6 h-6 bg-blue-500/20 rounded flex items-center justify-center flex-shrink-0" aria-hidden="true">
+                                                                                                        <div class="w-8 h-8 bg-slate-700 rounded-lg flex items-center justify-center flex-shrink-0">
+                                    <svg class="w-4 h-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M6 22a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h8a2.4 2.4 0 0 1 1.704.706l3.588 3.588A2.4 2.4 0 0 1 20 8v12a2 2 0 0 1-2 2z"></path>
+  <path d="M14 2v5a1 1 0 0 0 1 1h5"></path>
+  <path d="M10 9H8"></path>
+  <path d="M16 13H8"></path>
+  <path d="M16 17H8"></path>
+</svg>                                </div>
+                                                                                        </div>
+                <div class="flex-1 min-w-0">
+                    <div class="text-sm font-medium">20 - Adding Login Functionality</div>
+                                    </div>
+                <span class="text-xs text-gray-400 flex-shrink-0">5 min leestijd</span>
+            </a>
+                    <a href="21 - Using API Authentication Tokens _ Laravel Daily.html" class="lesson-item flex items-center gap-3 p-3 relative border-l-2 transition-colors duration-200 hover:bg-slate-700/20 border-l-2 border-transparent" aria-label="Course Overview - Free lesson - 5:42">
+                <div class="w-6 h-6 bg-blue-500/20 rounded flex items-center justify-center flex-shrink-0" aria-hidden="true">
+                                                                                                        <div class="w-8 h-8 bg-slate-700 rounded-lg flex items-center justify-center flex-shrink-0">
+                                    <svg class="w-4 h-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M6 22a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h8a2.4 2.4 0 0 1 1.704.706l3.588 3.588A2.4 2.4 0 0 1 20 8v12a2 2 0 0 1-2 2z"></path>
+  <path d="M14 2v5a1 1 0 0 0 1 1h5"></path>
+  <path d="M10 9H8"></path>
+  <path d="M16 13H8"></path>
+  <path d="M16 17H8"></path>
+</svg>                                </div>
+                                                                                        </div>
+                <div class="flex-1 min-w-0">
+                    <div class="text-sm font-medium">21 - Using API Authentication Tokens</div>
+                                    </div>
+                <span class="text-xs text-gray-400 flex-shrink-0">5 min leestijd</span>
+            </a>
+                    <a href="22 - Adding Bottom Navigation Bar _ Laravel Daily.html" class="lesson-item flex items-center gap-3 p-3 relative border-l-2 transition-colors duration-200 hover:bg-slate-700/20 border-l-2 border-transparent" aria-label="Course Overview - Free lesson - 5:42">
+                <div class="w-6 h-6 bg-blue-500/20 rounded flex items-center justify-center flex-shrink-0" aria-hidden="true">
+                                                                                                        <div class="w-8 h-8 bg-slate-700 rounded-lg flex items-center justify-center flex-shrink-0">
+                                    <svg class="w-4 h-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M6 22a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h8a2.4 2.4 0 0 1 1.704.706l3.588 3.588A2.4 2.4 0 0 1 20 8v12a2 2 0 0 1-2 2z"></path>
+  <path d="M14 2v5a1 1 0 0 0 1 1h5"></path>
+  <path d="M10 9H8"></path>
+  <path d="M16 13H8"></path>
+  <path d="M16 17H8"></path>
+</svg>                                </div>
+                                                                                        </div>
+                <div class="flex-1 min-w-0">
+                    <div class="text-sm font-medium">22 - Adding Bottom Navigation Bar</div>
+                                    </div>
+                <span class="text-xs text-gray-400 flex-shrink-0">4 min leestijd</span>
+            </a>
+                    <a href="23 - Storing Authentication Tokens on Device _ Laravel Daily.html" class="lesson-item flex items-center gap-3 p-3 relative border-l-2 transition-colors duration-200 hover:bg-slate-700/20 border-l-2 border-transparent" aria-label="Course Overview - Free lesson - 5:42">
+                <div class="w-6 h-6 bg-blue-500/20 rounded flex items-center justify-center flex-shrink-0" aria-hidden="true">
+                                                                                                        <div class="w-8 h-8 bg-slate-700 rounded-lg flex items-center justify-center flex-shrink-0">
+                                    <svg class="w-4 h-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M6 22a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h8a2.4 2.4 0 0 1 1.704.706l3.588 3.588A2.4 2.4 0 0 1 20 8v12a2 2 0 0 1-2 2z"></path>
+  <path d="M14 2v5a1 1 0 0 0 1 1h5"></path>
+  <path d="M10 9H8"></path>
+  <path d="M16 13H8"></path>
+  <path d="M16 17H8"></path>
+</svg>                                </div>
+                                                                                        </div>
+                <div class="flex-1 min-w-0">
+                    <div class="text-sm font-medium">23 - Storing Authentication Tokens on Device</div>
+                                    </div>
+                <span class="text-xs text-gray-400 flex-shrink-0">3 min leestijd</span>
+            </a>
+                    <a href="24 - Adding Another CRUD - Transactions _ Laravel Daily.html" class="lesson-item flex items-center gap-3 p-3 relative border-l-2 transition-colors duration-200 hover:bg-slate-700/20 border-l-2 border-transparent" aria-label="Course Overview - Free lesson - 5:42">
+                <div class="w-6 h-6 bg-blue-500/20 rounded flex items-center justify-center flex-shrink-0" aria-hidden="true">
+                                                                                                        <div class="w-8 h-8 bg-slate-700 rounded-lg flex items-center justify-center flex-shrink-0">
+                                    <svg class="w-4 h-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M6 22a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h8a2.4 2.4 0 0 1 1.704.706l3.588 3.588A2.4 2.4 0 0 1 20 8v12a2 2 0 0 1-2 2z"></path>
+  <path d="M14 2v5a1 1 0 0 0 1 1h5"></path>
+  <path d="M10 9H8"></path>
+  <path d="M16 13H8"></path>
+  <path d="M16 17H8"></path>
+</svg>                                </div>
+                                                                                        </div>
+                <div class="flex-1 min-w-0">
+                    <div class="text-sm font-medium">24 - Adding Another CRUD - Transactions</div>
+                                    </div>
+                <span class="text-xs text-gray-400 flex-shrink-0">12 min leestijd</span>
+            </a>
+                    <a href="25 - Fixing Code Issues _ Laravel Daily.html" class="lesson-item flex items-center gap-3 p-3 relative border-l-2 transition-colors duration-200 hover:bg-slate-700/20 border-l-2 border-transparent" aria-label="Course Overview - Free lesson - 5:42">
+                <div class="w-6 h-6 bg-blue-500/20 rounded flex items-center justify-center flex-shrink-0" aria-hidden="true">
+                                                                                                        <div class="w-8 h-8 bg-slate-700 rounded-lg flex items-center justify-center flex-shrink-0">
+                                    <svg class="w-4 h-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M6 22a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h8a2.4 2.4 0 0 1 1.704.706l3.588 3.588A2.4 2.4 0 0 1 20 8v12a2 2 0 0 1-2 2z"></path>
+  <path d="M14 2v5a1 1 0 0 0 1 1h5"></path>
+  <path d="M10 9H8"></path>
+  <path d="M16 13H8"></path>
+  <path d="M16 17H8"></path>
+</svg>                                </div>
+                                                                                        </div>
+                <div class="flex-1 min-w-0">
+                    <div class="text-sm font-medium">25 - Fixing Code Issues</div>
+                                    </div>
+                <span class="text-xs text-gray-400 flex-shrink-0">5 min leestijd</span>
+            </a>
+                    <a href="26 - Handling Token Expiration _ Laravel Daily.html" class="lesson-item flex items-center gap-3 p-3 relative border-l-2 transition-colors duration-200 hover:bg-slate-700/20 border-l-2 border-transparent" aria-label="Course Overview - Free lesson - 5:42">
+                <div class="w-6 h-6 bg-blue-500/20 rounded flex items-center justify-center flex-shrink-0" aria-hidden="true">
+                                                                                                        <div class="w-8 h-8 bg-slate-700 rounded-lg flex items-center justify-center flex-shrink-0">
+                                    <svg class="w-4 h-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M6 22a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h8a2.4 2.4 0 0 1 1.704.706l3.588 3.588A2.4 2.4 0 0 1 20 8v12a2 2 0 0 1-2 2z"></path>
+  <path d="M14 2v5a1 1 0 0 0 1 1h5"></path>
+  <path d="M10 9H8"></path>
+  <path d="M16 13H8"></path>
+  <path d="M16 17H8"></path>
+</svg>                                </div>
+                                                                                        </div>
+                <div class="flex-1 min-w-0">
+                    <div class="text-sm font-medium">26 - Handling Token Expiration</div>
+                                    </div>
+                <span class="text-xs text-gray-400 flex-shrink-0">6 min leestijd</span>
+            </a>
+            </div>
+                                </div>
+                            </div>
+                        </div>
+                    </aside>
+                </div>
+
+                <div class="h-px bg-gradient-to-r from-transparent via-blue-500/50 to-transparent my-12">
+</div>
+                <!-- Lesson Navigation -->
+<div class="flex items-center gap-4 mb-12 justify-between">
+            <a href="14 - Editing Categories _ Laravel Daily.html" class="inline-flex items-center gap-3 px-6 py-3 bg-slate-800 hover:bg-slate-700 border border-slate-700 rounded-lg transition group  flex-1 ">
+            <svg class="w-5 h-5 text-gray-400 group-hover:text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
+            </svg>
+            <div class="text-left">
+                <div class="text-xs text-gray-400 mb-1">Vorige</div>
+                <div class="text-sm font-semibold hidden md:block">14 - Editing Categories</div>
+            </div>
+        </a>
+    
+            <a href="16 - Real Time List Updates _ Laravel Daily.html" class="lesson--complete--next inline-flex items-center gap-3 px-6 py-3 bg-slate-800 hover:bg-slate-700 border border-slate-700 rounded-lg transition group  flex-1 ">
+            <div class="text-right ml-auto">
+                <div class="text-xs text-gray-400 mb-1">Volgende</div>
+                <div class="text-sm font-semibold hidden md:block">16 - Real Time List Updates</div>
+            </div>
+            <svg class="w-5 h-5 text-gray-400 group-hover:text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path>
+            </svg>
+        </a>
+    </div>
+
+                <div class="h-px bg-gradient-to-r from-transparent via-blue-500/50 to-transparent">
+</div>
+
+        </main>
+    </div>
+
+    <div class="h-px bg-gradient-to-r from-transparent via-blue-500/50 to-transparent">
+</div>
+
+            <!-- Newsletter / Footer Section -->
+<footer class="dark-section-bg py-20 px-6 relative border-t border-slate-800">
+    <div class="max-w-7xl mx-auto relative z-10">
+        <div class="pt-8 text-center text-gray-400 text-sm">
+            <p>MBO Utrecht Fullstack Developer Challenge 2026</p>
+        </div>
+    </div>
+</footer>
+
+        <!-- Scroll to Top Button -->
+        <button id="scrollToTop" class="z-10 fixed bottom-8 right-8 w-12 h-12 bg-blue-600 hover:bg-blue-500 text-white rounded-full shadow-xl flex items-center justify-center transition-all opacity-0 pointer-events-none" aria-label="Naar boven">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 10l7-7m0 0l7 7m-7-7v18"></path>
+            </svg>
+        </button>
+        <script>
+            // Scroll to top button
+            const scrollBtn = document.getElementById('scrollToTop');
+            window.addEventListener('scroll', () => {
+                if (window.scrollY > 300) {
+                    scrollBtn.classList.remove('opacity-0', 'pointer-events-none');
+                } else {
+                    scrollBtn.classList.add('opacity-0', 'pointer-events-none');
+                }
+            });
+            scrollBtn.addEventListener('click', () => {
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            });
+        </script>
+
+    
+    
+
+            <script>
+            // Global modal utility functions
+            window.openModal = function(modalId) {
+                const modal = document.getElementById(modalId);
+                if (modal) {
+                    modal.showModal();
+                }
+            };
+
+            window.closeModal = function(modalId) {
+                const modal = document.getElementById(modalId);
+                if (modal) {
+                    modal.close();
+
+                    // Dispatch custom event for cleanup
+                    modal.dispatchEvent(new CustomEvent('modal-closed', {
+                        detail: { modalId }
+                    }));
+                }
+            };
+
+            // Global reCAPTCHA submit handler (reusable for all modal forms)
+            window.submitFormWithRecaptcha = function(form, callback) {
+                                    grecaptcha.ready(function() {
+                        grecaptcha.execute('6LcTwyIiAAAAAGke_iP7Yw0T4GNJDV9A4jK0Knbq', { action: 'submit' })
+                            .then(function(token) {
+                                // Set the token in a hidden input field
+                                let tokenInput = form.querySelector('input[name="recaptcha_token"]');
+                                if (!tokenInput) {
+                                    tokenInput = document.createElement('input');
+                                    tokenInput.type = 'hidden';
+                                    tokenInput.name = 'recaptcha_token';
+                                    form.appendChild(tokenInput);
+                                }
+                                tokenInput.value = token;
+
+                                // Execute the callback
+                                if (callback) {
+                                    callback(token);
+                                }
+                            });
+                    });
+                            };
+
+            // Close modal on backdrop click
+            document.addEventListener('click', (e) => {
+                if (e.target.tagName === 'DIALOG') {
+                    const rect = e.target.getBoundingClientRect();
+                    if (
+                        e.clientX < rect.left ||
+                        e.clientX > rect.right ||
+                        e.clientY < rect.top ||
+                        e.clientY > rect.bottom
+                    ) {
+                        closeModal(e.target.id);
+                    }
+                }
+            });
+        </script>
+    
+<script defer="" src="./15 - Partial Widgets - Code Refactoring _ Laravel Daily_files/vcd15cbe7772f49c399c6a5babf22c1241717689176015" integrity="sha512-ZpsOmlRQV6y907TI0dKBHq9Md29nnaEIPlkf84rnaERnq6zvWvPUqr2ft8M1aS28oN72PdrCzSjY4U6VaAw1EQ==" data-cf-beacon="{&quot;version&quot;:&quot;2024.11.0&quot;,&quot;token&quot;:&quot;b6ad7cc5968b40bb86f1ec956f5241d0&quot;,&quot;r&quot;:1,&quot;server_timing&quot;:{&quot;name&quot;:{&quot;cfCacheStatus&quot;:true,&quot;cfEdge&quot;:true,&quot;cfExtPri&quot;:true,&quot;cfL4&quot;:true,&quot;cfOrigin&quot;:true,&quot;cfSpeedBrain&quot;:true},&quot;location_startswith&quot;:null}}" crossorigin="anonymous"></script>
+
+
+
+<div><div class="grecaptcha-badge" data-style="bottomright" style="width: 256px; height: 60px; position: fixed; visibility: hidden; display: block; transition: right 0.3s; bottom: 14px; right: -186px; box-shadow: gray 0px 0px 5px; border-radius: 2px; overflow: hidden;"><div class="grecaptcha-logo"><iframe title="reCAPTCHA" width="256" height="60" role="presentation" name="a-wx4bt1ib0eaf" frameborder="0" scrolling="no" sandbox="allow-forms allow-popups allow-same-origin allow-scripts allow-top-navigation allow-modals allow-popups-to-escape-sandbox allow-storage-access-by-user-activation" src="./15 - Partial Widgets - Code Refactoring _ Laravel Daily_files/anchor.html"></iframe></div><div class="grecaptcha-error"></div><textarea id="g-recaptcha-response-100000" name="g-recaptcha-response" class="g-recaptcha-response" style="width: 250px; height: 40px; border: 1px solid rgb(193, 193, 193); margin: 10px 25px; padding: 0px; resize: none; display: none;"></textarea></div><iframe style="display: none;" src="./15 - Partial Widgets - Code Refactoring _ Laravel Daily_files/saved_resource(1).html"></iframe></div></body></html>
