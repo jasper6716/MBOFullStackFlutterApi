@@ -1,0 +1,12 @@
+# ignore _MACOSX files
+__MACOSX/
+
+# ignore .DS_Store files
+.DS_Store
+# ignore node_modules
+node_modules/
+# ignore dist
+dist/
+# ignore .env files
+.env
+# ignore .vscode fi

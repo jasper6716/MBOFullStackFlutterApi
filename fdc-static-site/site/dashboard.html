@@ -1,0 +1,87 @@
+<!doctype html>
+<html lang="nl">
+
+<head>
+  <meta charset="utf-8">
+  <title>Dashboard • Fullstack Developer Challenge</title>
+
+  <script src="https://cdn.tailwindcss.com"></script>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+</head>
+
+<body class="bg-slate-950 text-slate-100">
+  <header class="sticky top-0 z-50 backdrop-blur bg-slate-950/70 border-b border-slate-800">
+    <div class="max-w-6xl mx-auto px-4 py-3 flex items-center justify-between">
+      <a href="/index.html" class="font-semibold tracking-tight">FDC • MBO Utrecht</a>
+      <nav class="text-sm flex gap-4 flex-wrap justify-end">
+        <a class="hover:text-white text-slate-200" href="/dashboard.html">Dashboard</a>
+        <a class="hover:text-white text-slate-200" href="/start-hier.html">Start hier</a>
+        <a class="hover:text-white text-slate-200" href="/challenge.html">De Challenge</a>
+        <a class="hover:text-white text-slate-200" href="/tutorials.html">Tutorials</a>
+        <a class="hover:text-white text-slate-200" href="/certificaat.html">Certificaat</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="max-w-6xl mx-auto px-4 py-10">
+
+    <h1 class="text-3xl font-bold tracking-tight">Dashboard</h1>
+    <p class="mt-2 text-slate-200 max-w-3xl">
+      Welkom. Dit is je homebase. Elke week staat er een focus. Jij kiest je tempo, maar je levert bewijs van progress.
+    </p>
+
+    <div class="mt-6 rounded-3xl border border-slate-800 p-6 bg-slate-900/10">
+      <h2 class="font-semibold text-lg">SW-planning (tempo)</h2>
+      <p class="mt-2 text-slate-200 text-sm max-w-3xl leading-relaxed">
+        Iedereen werkt op zijn eigen tempo, maar wel zo snel mogelijk. Ben je sneller? Dan mag je zelf nieuwe features
+        bedenken en toepassen.
+      </p>
+    </div>
+
+    <div class="mt-6 grid lg:grid-cols-3 gap-4">
+      <div class="rounded-3xl border border-slate-800 p-6 bg-slate-900/20 lg:col-span-2">
+        <h2 class="font-semibold text-lg">Week 1 missie</h2>
+        <p class="mt-2 text-slate-200 text-sm leading-relaxed">
+          Zet je omgeving op en maak de eerste API-verbinding vanuit Flutter. Je doel is simpel: <b>data ophalen</b> en
+          <b>iets tonen</b>.
+          Als dat lukt, heb je momentum.
+        </p>
+        <div class="mt-4 flex flex-wrap gap-3">
+          <a class="rounded-2xl bg-white text-slate-950 px-4 py-2 font-semibold hover:opacity-90"
+            href="/start-hier.html">Start hier (setup)</a>
+          <a class="rounded-2xl border border-slate-700 px-4 py-2 font-semibold hover:bg-slate-900"
+            href="/tutorials.html">Open tutorials</a>
+          <a class="rounded-2xl border border-slate-700 px-4 py-2 font-semibold hover:bg-slate-900"
+            href="https://www.youtube.com/playlist?list=PL4cUxeGkcC9jLYyp2Aoh6hcWuxFDX6PBJ" target="_blank"
+            rel="noopener noreferrer">Flutter video’s (YouTube)</a>
+        </div>
+      </div>
+
+      <div class="rounded-3xl border border-slate-800 p-6 bg-slate-900/20">
+        <h2 class="font-semibold text-lg">Developer mindset</h2>
+        <ul class="mt-3 space-y-2 text-slate-200 text-sm">
+          <li>🧩 Je zoekt eerst zelf 10 minuten, dan vraag je slim hulp.</li>
+          <li>🪲 Je noteert bugs + oplossing (kort).</li>
+          <li>🧪 Je probeert 1 extra ding per week (experiment).</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="mt-10 rounded-3xl border border-slate-800 p-6 bg-slate-900/10">
+      <h2 class="font-semibold text-lg">Vandaag: wat is “goed genoeg”?</h2>
+      <p class="mt-2 text-slate-200 text-sm leading-relaxed">
+        Perfect is niet het doel. Werkend is het doel. Daarna verbeteren. Developers shippen.
+      </p>
+    </div>
+
+  </main>
+
+  <footer class="border-t border-slate-800">
+    <div class="max-w-6xl mx-auto px-4 py-8 text-sm text-slate-400">
+      <div>Fullstack Developer Challenge (Laravel + Flutter) • Laatste update: 8 februari 2026</div>
+    </div>
+  </footer>
+</body>
+
+</html>
